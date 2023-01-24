@@ -12,5 +12,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         server: dundlabumi.lv
-        username: ${{ variables.ftp_username }}
+        username: $ftp_username
         password: ${{ secrets.ftp_password }}
