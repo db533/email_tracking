@@ -8,6 +8,12 @@ jobs:
     - name: Get latest code
       uses: actions/checkout@v3
 
+    - shell: bash
+        env:
+          ftp_username: ${{ secrets.ftp_username }}
+        run: |
+          echo "ftp_username"
+
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
