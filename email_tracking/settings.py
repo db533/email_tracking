@@ -104,16 +104,28 @@ WSGI_APPLICATION = 'email_tracking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-	'default': {
-		'ENGINE': 'djongo',
-		'NAME': 'email_tracking',
-			'ENFORCE_SCHEMA': False,
-			'CLIENT': {
-				'host': 'mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking?retryWrites=true&w=majority'
-			}
+if stage == 'dev':
+	DATABASES = {
+		'default': {
+			'ENGINE': 'djongo',
+			'NAME': 'email_tracking',
+				'ENFORCE_SCHEMA': False,
+				'CLIENT': {
+					'host': 'mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking?retryWrites=true&w=majority'
+				}
+		}
 	}
-}
+elif stage == 'prod':
+	DATABASES = {
+		'default': {
+			'ENGINE': 'djongo',
+			'NAME': 'email_tracking_prod',
+				'ENFORCE_SCHEMA': False,
+				'CLIENT': {
+					'host': 'mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking_prod?retryWrites=true&w=majority'
+				}
+		}
+	}
 
 
 # Password validation
