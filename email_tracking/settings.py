@@ -29,7 +29,13 @@ def import_env_vars(project_root,env_filename):
 						"in order to run the server in your local machine. "
 						"This specifies some necessary environment variables. ")
 	for line in envfile.readlines():
-		[key,value] = line.strip().split("=")
+		print('line:',line)
+		first_equals = line.find('=')
+		key = line[:first_equals]
+		value = line[first_equals+1:].strip()
+		#[key,value] = line.strip().split("=")
+		print('key:',key)
+		print('value:', value)
 		os.environ[key] = value
 
 if Path("env").is_file():
@@ -42,6 +48,7 @@ else:
 stage = os.getenv('stage')
 print('stage:',stage)
 django_secret_key=stage = os.getenv('django_secret_key')
+mongodb_uri=stage = os.getenv('mongodb_uri')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -111,7 +118,7 @@ if stage == 'dev':
 			'NAME': 'email_tracking',
 				'ENFORCE_SCHEMA': False,
 				'CLIENT': {
-					'host': 'mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking?retryWrites=true&w=majority'
+					'host': mongodb_uri
 				}
 		}
 	}
@@ -122,7 +129,7 @@ elif stage == 'prod':
 			'NAME': 'email_tracking_prod',
 				'ENFORCE_SCHEMA': False,
 				'CLIENT': {
-					'host': 'mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking_prod?retryWrites=true&w=majority'
+					'host': mongodb_uri
 				}
 		}
 	}
@@ -162,7 +169,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+if stage == 'dev':
+	STATIC_URL = 'static/'
+elif stage == 'prod':
+	STATIC_URL = '/static/'
+	STATIC_ROOT = '/home/saknesar/publichtml/static'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
