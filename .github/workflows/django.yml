@@ -8,7 +8,7 @@ jobs:
     - name: Get latest code
       uses: actions/checkout@v3
 
-    - shell: bash
+    - shell: cmd
         env:
           ftp_username: ${{ secrets.ftp_username }}
         run: |
