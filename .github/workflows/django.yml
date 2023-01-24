@@ -12,7 +12,7 @@ jobs:
         env:
           ftp_username: ${{ secrets.ftp_username }}
         run: |
-          echo "ftp_username"
+          echo "$ftp_username"
 
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
