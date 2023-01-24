@@ -9,7 +9,7 @@ class Email(models.Model):
     subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin')
     send_dt = models.DateTimeField(auto_now=False, auto_now_add=False)
     open_dt = models.DateTimeField(auto_now=False, auto_now_add=False)
-    opened = models.BooleanField(help_text='Was this email opened by the recipient. ', default=False,blank=False,verbose_name= ('Vai epasts atvērts?'))
+    opened = models.BooleanField(help_text='Was this email opened by the recipient.', default=False,blank=False,verbose_name= ('Vai epasts atvērts?'))
 
     # Display individual records
     def get_absolute_url(self):
