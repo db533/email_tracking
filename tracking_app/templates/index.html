@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Email tracking home page</h1>
+  <p>Welcome to Email tracking site, a website developed by <em>Dainis</em>!</p>
+  {% load static %}
+  <img src="{% static 'images/email_tracking_image.jpg' %}" alt="Email image" style="width:700px;height:408px;" />
+  <h2>Dynamic content</h2>
+  <p>The website has the following record counts:</p>
+  <ul>
+    <li><strong>Emails:</strong> {{ num_email_clicks }}</li>
+  </ul>
+{% endblock %}

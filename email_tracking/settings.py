@@ -22,20 +22,20 @@ def import_env_vars(project_root,env_filename):
 	if len(project_root) > 0 and project_root[-1] != '/':
 		project_root += '/'
 	try:
-		print("filename:", project_root + env_filename)
+		#print("filename:", project_root + env_filename)
 		envfile = open(project_root + env_filename, "r")
 	except IOError:
 		raise Exception("You must have a {0} file in your project root "
 						"in order to run the server in your local machine. "
 						"This specifies some necessary environment variables. ")
 	for line in envfile.readlines():
-		print('line:',line)
+		#print('line:',line)
 		first_equals = line.find('=')
 		key = line[:first_equals]
 		value = line[first_equals+1:].strip()
 		#[key,value] = line.strip().split("=")
-		print('key:',key)
-		print('value:', value)
+		#print('key:',key)
+		#print('value:', value)
 		os.environ[key] = value
 
 if Path("env").is_file():
@@ -44,7 +44,7 @@ if Path("env").is_file():
 	import_env_vars('','env')
 else:
 	print("Did not find env file. Expect environment variables to be passed to container.")
-
+db_name = 'email_tracking'
 stage = os.getenv('stage')
 print('stage:',stage)
 django_secret_key=stage = os.getenv('django_secret_key')
@@ -61,8 +61,10 @@ DEBUG = True
 
 if stage == "dev":
 	ALLOWED_HOSTS = []
+	db_name = 'email_tracking'
 elif stage == "prod":
 	ALLOWED_HOSTS = ['*']
+	db_name = 'email_tracking_prod'
 
 
 # Application definition
@@ -111,29 +113,17 @@ WSGI_APPLICATION = 'email_tracking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if stage == 'dev':
-	DATABASES = {
-		'default': {
-			'ENGINE': 'djongo',
-			'NAME': 'email_tracking',
-				'ENFORCE_SCHEMA': False,
-				'CLIENT': {
-					'host': mongodb_uri
-				}
+DATABASES = {
+	'default': {
+		'ENGINE': 'djongo',
+		'NAME': db_name,
+			'ENFORCE_SCHEMA': False,
+			'CLIENT': {
+				'host': mongodb_uri
+			}
 		}
 	}
-elif stage == 'prod':
-	DATABASES = {
-		'default': {
-			'ENGINE': 'djongo',
-			'NAME': 'email_tracking_prod',
-				'ENFORCE_SCHEMA': False,
-				'CLIENT': {
-					'host': mongodb_uri
-				}
-		}
-	}
-
+print('DATABASES:', DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -169,11 +159,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-if stage == 'dev':
-	STATIC_URL = 'static/'
-elif stage == 'prod':
-	STATIC_URL = '/static/'
-	STATIC_ROOT = '/home/saknesar/publichtml/static'
+STATIC_URL = 'static/'
+#if stage == 'dev':
+#	STATIC_URL = 'static/'
+#	STATIC_ROOT = 'static/'
+#elif stage == 'prod':
+#	STATIC_URL = '/static/'
+#	STATIC_ROOT = '/home/saknesar/publichtml/static'
 
 
 # Default primary key field type

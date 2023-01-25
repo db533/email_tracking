@@ -20,10 +20,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+from django.urls import include
+urlpatterns += [
+    path('tracking_app/', include('tracking_app.urls')),
+]
+
 #Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 urlpatterns += [
-    path('', RedirectView.as_view(url='email_tracker/', permanent=True)),
+    path('', RedirectView.as_view(url='tracking_app/', permanent=True)),
 ]
 
 # Use static() to add URL mapping to serve static files during development (only)
