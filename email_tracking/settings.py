@@ -59,13 +59,16 @@ SECRET_KEY = django_secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+stage = os.getenv('stage')
 if stage == "dev":
 	ALLOWED_HOSTS = []
 	db_name = 'email_tracking'
+	static_url = 'static/'
 elif stage == "prod":
 	ALLOWED_HOSTS = ['*']
 	db_name = 'email_tracking_prod'
-
+	static_url = '/static/'
+	static_root = '/home/saknesar/public_html/static'
 
 # Application definition
 
@@ -159,14 +162,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-#if stage == 'dev':
-#	STATIC_URL = 'static/'
-#	STATIC_ROOT = 'static/'
-#elif stage == 'prod':
-#	STATIC_URL = '/static/'
-#	STATIC_ROOT = '/home/saknesar/publichtml/static'
 
+STATIC_URL = static_url
+if stage == "prod":
+	STATIC_ROOT = static_root
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
