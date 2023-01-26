@@ -4,7 +4,7 @@
 src_dir="/home/saknesar/dundlabumi.lv/dainis_git_action"
 
 # destination directory
-dst_dir="/email/"
+dst_dir="/home/saknesar/email/"
 
 # array of files and directories to copy
 files_to_copy=("manage.py" "passenger_wsgi.py" "email_tracking" "tracking_app")
