@@ -48,7 +48,8 @@ db_name = 'email_tracking'
 stage = os.getenv('stage')
 print('stage:',stage)
 django_secret_key=stage = os.getenv('django_secret_key')
-mongodb_uri=stage = os.getenv('mongodb_uri')
+mongodb_uri = os.getenv('mongodb_uri')
+mongodb_uri_prod = os.getenv('mongodb_uri_prod')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -115,6 +116,10 @@ WSGI_APPLICATION = 'email_tracking.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
+stage = os.getenv('stage')
+if stage == "prod":
+	mongodb_uri = mongodb_uri_prod
 
 DATABASES = {
 	'default': {
