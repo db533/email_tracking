@@ -11,5 +11,5 @@ files_to_copy=("manage.py" "passenger_wsgi.py" "prepare_virtual_env.sh" "email_t
 
 # loop through the array and copy each file/folder
 for item in "${files_to_copy[@]}"; do
-  cp -r "$src_dir/$item" "$dst_dir"
+  cp -rf "$src_dir/$item" "$dst_dir"
 done
