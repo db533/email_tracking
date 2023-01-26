@@ -120,7 +120,7 @@ WSGI_APPLICATION = 'email_tracking.wsgi.application'
 stage = os.getenv('stage')
 if stage == "prod":
 	mongodb_uri = mongodb_uri_prod
-
+print('mongodb_uri:',mongodb_uri)
 DATABASES = {
 	'default': {
 		'ENGINE': 'djongo',
