@@ -12,65 +12,66 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+# https://djangostars.com/blog/configuring-django-settings-best-practices/
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-def import_env_vars(project_root,env_filename):
-	"""Imports some environment variables from a special .env file in the
-	project root directory.
-	"""
-	if len(project_root) > 0 and project_root[-1] != '/':
-		project_root += '/'
-	try:
-		#print("filename:", project_root + env_filename)
-		envfile = open(project_root + env_filename, "r")
-	except IOError:
-		raise Exception("You must have a {0} file in your project root "
-						"in order to run the server in your local machine. "
-						"This specifies some necessary environment variables. ")
-	for line in envfile.readlines():
-		#print('line:',line)
-		first_equals = line.find('=')
-		key = line[:first_equals]
-		value = line[first_equals+1:].strip()
-		#[key,value] = line.strip().split("=")
-		#print('key:',key)
-		#print('value:', value)
-		os.environ[key] = value
+root = environ.Path(__file__) - 3  # get root of the project
+SITE_ROOT = root()
 
-if Path("env").is_file():
-	# file exists
-	print("Found env file. Reading variables.")
-	import_env_vars('','env')
-else:
-	print("Did not find env file. Expect environment variables to be passed to container.")
+env = environ.Env()
+environ.Env.read_env()  # reading .env file
+
+#def import_env_vars(project_root,env_filename):
+#	"""Imports some environment variables from a special .env file in the
+#	project root directory.
+#	"""
+#	if len(project_root) > 0 and project_root[-1] != '/':
+#		project_root += '/'
+#	try:
+#		#print("filename:", project_root + env_filename)
+#		envfile = open(project_root + env_filename, "r")
+#	except IOError:
+#		raise Exception("You must have a {0} file in your project root "
+#						"in order to run the server in your local machine. "
+#						"This specifies some necessary environment variables. ")
+#	for line in envfile.readlines():
+#		#print('line:',line)
+#		first_equals = line.find('=')
+#		key = line[:first_equals]
+#		value = line[first_equals+1:].strip()
+#		#[key,value] = line.strip().split("=")
+#		#print('key:',key)
+#		#print('value:', value)
+#		os.environ[key] = value
+
+#if Path("env").is_file():
+#	# file exists
+#	print("Found env file. Reading variables.")
+#	import_env_vars('','env')
+#else:
+#	print("Did not find env file. Expect environment variables to be passed to container.")
+
 db_name = 'email_tracking'
-stage = os.getenv('stage')
+stage = env.str('stage', default='dev')
 print('stage:',stage)
-django_secret_key=stage = os.getenv('django_secret_key')
-mongodb_uri = os.getenv('mongodb_uri')
-mongodb_uri_prod = os.getenv('mongodb_uri_prod')
+
+mongodb_uri = env.str('mongodb_uri', default='mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking?retryWrites=true&w=majority')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = django_secret_key
+SECRET_KEY = env.str('django_secret_key', default='django-insecure-&+l0bsg19f2+gxmpub74g)$7*yq0t0zn9o1^78b!a1q!^sx!jc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('debug', default=False)
+TEMPLATE_DEBUG = DEBUG
 
-stage = os.getenv('stage')
-if stage == "dev":
-	ALLOWED_HOSTS = []
-	db_name = 'email_tracking'
-	static_url = 'static/'
-elif stage == "prod":
-	ALLOWED_HOSTS = ['*']
-	db_name = 'email_tracking_prod'
-	static_url = '/static/'
-	static_root = '/home/saknesar/public_html/static'
-
+ALLOWED_HOSTS = env('allowed_hosts', cast=[str])
+print('ALLOWED_HOSTS:',ALLOWED_HOSTS)
 # Application definition
 
 INSTALLED_APPS = [
@@ -117,17 +118,13 @@ WSGI_APPLICATION = 'email_tracking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-stage = os.getenv('stage')
-if stage == "prod":
-	mongodb_uri = mongodb_uri_prod
-print('mongodb_uri:',mongodb_uri)
 DATABASES = {
 	'default': {
 		'ENGINE': 'djongo',
-		'NAME': db_name,
+		'NAME': env.str('db_name', default='email_tracking'),
 			'ENFORCE_SCHEMA': False,
 			'CLIENT': {
-				'host': mongodb_uri
+				'host': env.str('mongodb_uri', default='mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking?retryWrites=true&w=majority')
 			}
 		}
 	}
@@ -168,9 +165,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 
-STATIC_URL = static_url
-if stage == "prod":
-	STATIC_ROOT = static_root
+public_root = root.path('public/')
+MEDIA_ROOT = public_root('media')
+MEDIA_URL = env.str('MEDIA_URL', default='media/')
+STATIC_ROOT = public_root('static')
+STATIC_URL = env.str('STATIC_URL', default='static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
