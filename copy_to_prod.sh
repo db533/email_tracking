@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # source directory
-src_dir=""
+src_dir="dundlabumi.lv/dainis_git_action"
 
 # destination directory
 dst_dir="/email/"
