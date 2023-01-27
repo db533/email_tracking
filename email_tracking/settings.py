@@ -24,41 +24,8 @@ SITE_ROOT = root()
 env = environ.Env()
 environ.Env.read_env()  # reading .env file
 
-#def import_env_vars(project_root,env_filename):
-#	"""Imports some environment variables from a special .env file in the
-#	project root directory.
-#	"""
-#	if len(project_root) > 0 and project_root[-1] != '/':
-#		project_root += '/'
-#	try:
-#		#print("filename:", project_root + env_filename)
-#		envfile = open(project_root + env_filename, "r")
-#	except IOError:
-#		raise Exception("You must have a {0} file in your project root "
-#						"in order to run the server in your local machine. "
-#						"This specifies some necessary environment variables. ")
-#	for line in envfile.readlines():
-#		#print('line:',line)
-#		first_equals = line.find('=')
-#		key = line[:first_equals]
-#		value = line[first_equals+1:].strip()
-#		#[key,value] = line.strip().split("=")
-#		#print('key:',key)
-#		#print('value:', value)
-#		os.environ[key] = value
-
-#if Path("env").is_file():
-#	# file exists
-#	print("Found env file. Reading variables.")
-#	import_env_vars('','env')
-#else:
-#	print("Did not find env file. Expect environment variables to be passed to container.")
-
-db_name = 'email_tracking'
 stage = env.str('stage', default='dev')
 print('stage:',stage)
-
-mongodb_uri = env.str('mongodb_uri', default='mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking?retryWrites=true&w=majority')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
