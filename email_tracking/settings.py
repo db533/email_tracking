@@ -34,8 +34,10 @@ print('stage:',stage)
 SECRET_KEY = env.str('django_secret_key', default='django-insecure-&+l0bsg19f2+gxmpub74g)$7*yq0t0zn9o1^78b!a1q!^sx!jc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+print('debug:',env.bool('debug', default=False))
 DEBUG = env.bool('debug', default=False)
 TEMPLATE_DEBUG = DEBUG
+print('debug:',DEBUG)
 
 ALLOWED_HOSTS = env('allowed_hosts', cast=[str])
 print('ALLOWED_HOSTS:',ALLOWED_HOSTS)
@@ -84,8 +86,6 @@ WSGI_APPLICATION = 'email_tracking.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-env = environ.Env()
-environ.Env.read_env()  # reading .env file
 print('db_name:',env.str('db_name', default='email_tracking'))
 DATABASES = {
 	'default': {
