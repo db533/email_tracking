@@ -84,6 +84,8 @@ WSGI_APPLICATION = 'email_tracking.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+env = environ.Env()
+environ.Env.read_env()  # reading .env file
 print('db_name:',env.str('db_name', default='email_tracking'))
 DATABASES = {
 	'default': {
