@@ -19,5 +19,5 @@ jobs:
         mongodb_uri : ${{ secrets.mongodb_uri }}
       with:
         server: ftp.saknes.area.lv
-        username: ${{ secrets.ftp__dev_username }}
-        password: ${{ secrets.ftp_dev_password }}
+        username: ${{ secrets.FTP_DEV_USERNAME }}
+        password: ${{ secrets.FTP_DEV_PASSWORD }}
