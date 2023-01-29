@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields import CharField, EmailField, UUIDField
 
 # Create your models here.
 
@@ -19,3 +20,10 @@ class Email(models.Model):
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return self.my_field_name
+
+class User(models.Model):
+    email = EmailField(max_length=254, blank=True, null=True)
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.email
