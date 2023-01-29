@@ -1,23 +1,23 @@
 on:
   push:
     branches:
-      - master
+      - develop
 
-name: Deploy website to production
+name: Deploy develop branch code
 jobs:
   web-deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: Get latest code
+    - name: Get latest code from develop branch
       uses: actions/checkout@v3
 
-    - name: Sync files to prod
+    - name: Sync files to hosted dev
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       env:
         django_secret_key : ${{ secrets.DJANGO_SECRET_KEY_PROD }}
         mongodb_uri : ${{ secrets.mongodb_uri }}
       with:
         server: ftp.saknes.area.lv
-        username: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
+        username: ${{ secrets.ftp__dev_username }}
+        password: ${{ secrets.ftp_dev_password }}
