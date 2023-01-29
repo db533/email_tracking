@@ -22,7 +22,7 @@ root = environ.Path(__file__) - 3  # get root of the project
 SITE_ROOT = root()
 
 env = environ.Env()
-environ.Env.read_env()  # reading .env file
+environ.Env.read_env(overwrite=True)  # reading .env file
 
 stage = env.str('stage', default='dev')
 print('stage:',stage)
@@ -34,7 +34,6 @@ print('stage:',stage)
 SECRET_KEY = env.str('django_secret_key', default='django-insecure-&+l0bsg19f2+gxmpub74g)$7*yq0t0zn9o1^78b!a1q!^sx!jc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-print('debug:',env.bool('debug', default=False))
 DEBUG = env.bool('debug', default=False)
 TEMPLATE_DEBUG = DEBUG
 print('debug:',DEBUG)
