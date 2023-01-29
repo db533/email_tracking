@@ -139,7 +139,8 @@ USE_TZ = True
 public_root = root.path('public/')
 MEDIA_ROOT = public_root('media')
 MEDIA_URL = env.str('MEDIA_URL', default='media/')
-STATIC_ROOT = public_root('static')
+#STATIC_ROOT = public_root('static')
+STATIC_ROOT = env.str('STATIC_ROOT', default='static')
 STATIC_URL = env.str('STATIC_URL', default='static/')
 
 # Default primary key field type
