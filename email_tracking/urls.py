@@ -19,7 +19,13 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+#Add URL maps to redirect the base URL to our application
+from django.views.generic import RedirectView
+urlpatterns += [
+    path('', RedirectView.as_view(url='tracking_app/', permanent=True)),
+]
+
 urlpatterns += [
     path('tracking_app/', include('tracking_app.urls')),
 ]
-
