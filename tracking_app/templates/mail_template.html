@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load ptrack %}
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,8 +9,6 @@
 <body>
 Hello ,
 <p>Some message here </p>
-<p>{{user}}<br />Image Link & Image</p>
-<p>Link: {{url_is}}</p>
-<img src="{{url_is}}" height="40px" width="40px"/>
+{% ptrack subscriber_id=1 %}
 </body>
 </html>

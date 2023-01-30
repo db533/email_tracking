@@ -1,18 +1,5 @@
 from django.shortcuts import render
-#from .models import Email
-
-#https://manojadhikari.medium.com/track-email-opened-status-django-rest-framework-5fcd1fbdecfb
-from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from .models import *
-from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponse
-from PIL import Image
-from rest_framework.decorators import api_view
-from django.template import Context
-from django.template.loader import get_template
 
 # Create your views here.
 def index(request):
@@ -29,29 +16,32 @@ def index(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
 
+#https://alwaysdjango.com/how-to-send-html-emails-in-django/
 
-class SendTemplateMailView(APIView):
-    def post(self, request, *args, **kwargs):
-        target_user_email = request.data.get('email')
-        mail_template = get_template("mail_template.html")
-        context_data_is = dict()
-        context_data_is["image_url"] = request.build_absolute_uri(("render_image"))
-        url_is = context_data_is["image_url"]
-        context_data_is['url_is'] = url_is
-        html_detail = mail_template.render(context_data_is)
-        subject, from_email, to = "Greetings !!", 'postmaster@manojadhikary.com.np', [target_user_email]
-        msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
-        msg.content_subtype = 'html'
-        msg.send()
-        return Response({"success": True})
+from django.conf import settings
+from django.http import HttpResponse
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
-@api_view()
-def render_image(request):
-     if request.method =='PUT':
-         image= Image.new('RGB', (20, 20))
-         response = HttpResponse(content_type="image/png" , status = status.HTTP_200_OK)
-         user = User.objects.get(id = 1)
-         user.status = True
-         user.save()
-         image.save(response, "PNG")
-     return response
+def sendHTMLEmail(request):
+    context ={
+        "title":"Test",
+        "content":"Testing sending HTML emails from Django"
+    }
+    html_content = render_to_string("mail_template.html", context)
+    text_content = strip_tags(html_content)
+    thread = threading.Thread(target=emailSender, args=("Email Subject", text_content,html_content,['db5331@gmail.com']))
+    thread.start()
+    return HttpResponse("Email Sent successfully")
+
+
+def emailSender(subject, text_content,html_content, reciepants):
+    email = EmailMultiAlternatives(
+        subject,
+        text_content,
+        settings.EMAIL_HOST_USER ,
+        reciepants
+    )
+    email.attach_alternative(html_content, 'text/html')
+    email.send()

@@ -11,11 +11,4 @@ from django.conf.urls.static import static
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# https://manojadhikari.medium.com/track-email-opened-status-django-rest-framework-5fcd1fbdecfb
-from tracking_app.views import SendTemplateMailView , render_image
-
-urlpatterns += [
-      path('send/render_image/',render_image, name='render_image'),
-      path('send/', SendTemplateMailView.as_view(), name=    'send_template'),
-]
 

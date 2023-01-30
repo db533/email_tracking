@@ -28,4 +28,6 @@ urlpatterns += [
 
 urlpatterns += [
     path('tracking_app/', include('tracking_app.urls')),
+    path('ptrack/', include('ptrack.urls')), # Variation on required code from https://github.com/indeedeng/django-ptrack
 ]
+
