@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 	'tracking_app.apps.TrackingAppConfig',
 	'django_hosts',
 	'ptrack',
+	'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +166,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=env.str('EMAIL_HOST_PASSWORD')
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
