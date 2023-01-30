@@ -161,7 +161,7 @@ PTRACK_APP_URL = env.str('allowed_hosts', default='localhost') # Example: PTRACK
 # https://alwaysdjango.com/how-to-send-html-emails-in-django/
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.dundlabumi.lv'
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = False
 EMAIL_PORT = 465
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=env.str('EMAIL_HOST_PASSWORD')
