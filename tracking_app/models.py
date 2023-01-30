@@ -4,9 +4,6 @@ from django.db.models.fields import CharField, EmailField, UUIDField
 # Create your models here.
 
 class Email(models.Model):
-    """A typical class defining a model, derived from the Model class."""
-
-    # Fields
     subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin')
     send_dt = models.DateTimeField(auto_now=False, auto_now_add=False)
     open_dt = models.DateTimeField(auto_now=False, auto_now_add=False)
@@ -19,7 +16,7 @@ class Email(models.Model):
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
-        return self.my_field_name
+        return self.subscriber_id
 
 class User(models.Model):
     email = EmailField(max_length=254, blank=True, null=True)
