@@ -68,6 +68,7 @@ class SendTemplateMailView(APIView):
         msg.send()
         response_dict={}
         response_dict['all_data'] = all_data
+        response_dict['request.headers'] = request.headers
         #response_dict['outbound_email'] = outbound_email
         response_dict['target_user_email']=target_user_email
         response_dict['url_is'] = url_is
