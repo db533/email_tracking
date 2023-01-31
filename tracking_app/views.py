@@ -55,20 +55,20 @@ class SendTemplateMailView(APIView):
     def post(self, request, *args, **kwargs):
         all_data = request.data
         target_user_email = request.data.get('email')
-        outbound_email = 'db5331@gmail.com'
+        #outbound_email = 'db5331@gmail.com'
         mail_template = get_template("mail_template.html")
         context_data_is = dict()
         context_data_is["image_url"] = request.build_absolute_uri(("render_image"))
         url_is = context_data_is["image_url"]
         context_data_is['url_is'] = url_is
         html_detail = mail_template.render(context_data_is)
-        subject, from_email, to = "Greetings !!", 'info@dundlabumi.lv', [outbound_email]
+        subject, from_email, to = "Greetings !!", 'info@dundlabumi.lv', [target_user_email]
         msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
         msg.content_subtype = 'html'
         msg.send()
         response_dict={}
         response_dict['all_data'] = all_data
-        response_dict['outbound_email'] = outbound_email
+        #response_dict['outbound_email'] = outbound_email
         response_dict['target_user_email']=target_user_email
         response_dict['url_is'] = url_is
         response_dict['from_email'] = from_email
