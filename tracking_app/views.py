@@ -53,6 +53,7 @@ from django.template.loader import get_template
 
 class SendTemplateMailView(APIView):
     def post(self, request, *args, **kwargs):
+        all_data = request.data
         target_user_email = request.data.get('email')
         mail_template = get_template("mail_template.html")
         context_data_is = dict()
@@ -65,6 +66,7 @@ class SendTemplateMailView(APIView):
         msg.content_subtype = 'html'
         msg.send()
         response_dict={}
+        response_dict['all_data'] = all_data
         response_dict['target_user_email']=target_user_email
         response_dict['url_is'] = url_is
         response_dict['from_email'] = from_email
