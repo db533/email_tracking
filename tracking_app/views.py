@@ -64,7 +64,12 @@ class SendTemplateMailView(APIView):
         msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
         msg.content_subtype = 'html'
         msg.send()
-        return Response({"success": True})
+        response_dict={}
+        response_dict['target_user_email']=target_user_email
+        response_dict['url_is'] = url_is
+        response_dict['from_email'] = from_email
+        response_dict['success'] = True
+        return Response(response_dict)
 
 @api_view()
 def render_image(request):
