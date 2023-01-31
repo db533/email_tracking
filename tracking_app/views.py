@@ -55,6 +55,7 @@ class SendTemplateMailView(APIView):
     def post(self, request, *args, **kwargs):
         all_data = request.data
         target_user_email = request.data.get('email')
+        target_user_email = 'db5331@gmail.com'
         mail_template = get_template("mail_template.html")
         context_data_is = dict()
         context_data_is["image_url"] = request.build_absolute_uri(("render_image"))
