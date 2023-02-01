@@ -29,6 +29,5 @@ from .views import SendTemplateMailView , render_image, ListUsers
 
 urlpatterns += [
       path('send/render_image/',render_image, name='render_image'),
-      path('send/', SendTemplateMailView.as_view(), name='mail_template'),
-      path('users/', ListUsers.as_view()),
+      path('send/', SendTemplateMailView.as_view(), name='send_template'),
 ]
