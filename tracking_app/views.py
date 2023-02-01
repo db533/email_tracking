@@ -51,7 +51,7 @@ from django.template import Context
 from django.template.loader import get_template
 
 
-class SendTemplateMailView2(APIView):
+class SendTemplateMailView(APIView):
     def post(self, request, *args, **kwargs):
         all_data = request.data
         #target_user_email = request.data.get('email')
@@ -74,31 +74,6 @@ class SendTemplateMailView2(APIView):
         response_dict['url_is'] = url_is
         response_dict['from_email'] = from_email
         response_dict['success'] = True
-        return Response(response_dict)
-
-
-class SendTemplateMailView(APIView):
-    def post(self, request, *args, **kwargs):
-        target_user_email = request.data.get('email')
-        #mail_template = get_template("mail_template.html")
-        #context_data_is = dict()
-        #context_data_is["image_url"] = request.build_absolute_uri(("render_image"))
-        #url_is = context_data_is["image_url"]
-        #context_data_is['url_is'] = url_is
-        #html_detail = mail_template.render(context_data_is)
-        #subject, from_email, to = "Greetings !!", 'info@dundlabumi.lv', [target_user_email]
-        #msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
-        #msg.content_subtype = 'html'
-        #msg.send()
-        response_dict={}
-        #response_dict['all_data'] = all_data
-        response_dict['request.headers'] = request.headers
-        response_dict['request.body'] = request.body
-        #response_dict['target_user_email']=target_user_email
-        #response_dict['url_is'] = url_is
-        #response_dict['from_email'] = from_email
-        response_dict['success'] = True
-
         return Response(response_dict)
 
 class ListUsers(APIView):
