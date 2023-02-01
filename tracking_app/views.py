@@ -91,7 +91,7 @@ class SendTemplateMailView(APIView):
         #msg.content_subtype = 'html'
         #msg.send()
         response_dict={}
-        response_dict['all_data'] = all_data
+        #response_dict['all_data'] = all_data
         response_dict['request.headers'] = request.headers
         response_dict['request.body'] = request.body
         response_dict['target_user_email']=target_user_email
