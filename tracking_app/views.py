@@ -101,6 +101,20 @@ class SendTemplateMailView(APIView):
 
         return Response(response_dict)
 
+class ListUsers(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    def get(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        usernames = [user.username for user in User.objects.all()]
+        return Response(usernames)
+
 @api_view()
 def render_image(request):
     if request.method =='PUT':
