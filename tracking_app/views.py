@@ -94,7 +94,7 @@ class SendTemplateMailView(APIView):
         #response_dict['all_data'] = all_data
         response_dict['request.headers'] = request.headers
         response_dict['request.body'] = request.body
-        response_dict['target_user_email']=target_user_email
+        #response_dict['target_user_email']=target_user_email
         #response_dict['url_is'] = url_is
         #response_dict['from_email'] = from_email
         response_dict['success'] = True
