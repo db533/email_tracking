@@ -25,7 +25,7 @@ urlpatterns += [
     path('', include(router.urls)),
 ]
 
-from .views import SendTemplateMailView , render_image, ListUsers
+from .views import SendTemplateMailView , render_image
 
 urlpatterns += [
       path('send/render_image/',render_image, name='render_image'),
