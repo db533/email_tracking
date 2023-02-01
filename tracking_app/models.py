@@ -18,7 +18,7 @@ class Email(models.Model):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return self.subscriber_id
 
-class User(models.Model):
+class UserModel(models.Model):
     email = EmailField(max_length=254, blank=True, null=True)
     status = models.BooleanField(default=False)
 

@@ -120,7 +120,7 @@ def render_image(request):
     if request.method =='PUT':
         image= Image.new('RGB', (20, 20))
         response = HttpResponse(content_type="image/png" , status = status.HTTP_200_OK)
-        user = User.objects.get(id = 1)
+        user = UserModel.objects.get(id = 1)
         user.status = True
         user.save()
         image.save(response, "PNG")
