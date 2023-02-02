@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 	'tracking_app.apps.TrackingAppConfig',
 	'django_hosts',
-	'ptrack',
+#	'ptrack',
 	'rest_framework',
 ]
 
@@ -154,9 +154,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ROOT_HOSTCONF = 'email_tracking.hosts'
 DEFAULT_HOST = 'email'
 
-PTRACK_SECRET = env.str('PTRACK_SECRET', default='rrtNPNc6Y48SkrDPfsVbY2lyUR0zpZH3')
+#PTRACK_SECRET = env.str('PTRACK_SECRET', default='rrtNPNc6Y48SkrDPfsVbY2lyUR0zpZH3')
 
-PTRACK_APP_URL = env.str('allowed_hosts', default='localhost') # Example: PTRACK_APP_URL = "https://www.example.com"
+#PTRACK_APP_URL = env.str('allowed_hosts', default='localhost') # Example: PTRACK_APP_URL = "https://www.example.com"
 
 # https://alwaysdjango.com/how-to-send-html-emails-in-django/
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
