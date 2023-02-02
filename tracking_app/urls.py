@@ -15,19 +15,19 @@ from django.conf.urls.static import static
 # https://www.django-rest-framework.org/tutorial/quickstart/
 from rest_framework import routers
 
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
+#router = routers.DefaultRouter()
+#router.register(r'users', views.UserViewSet)
+#router.register(r'groups', views.GroupViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
-urlpatterns = [
-    path('api/', include(router.urls)),
+#urlpatterns += [
+#    path('api/', include(router.urls)),
 ]
 
 from .views import SendTemplateMailView , render_image
 
-urlpatterns += [
+urlpatterns = [
       path('send/render_image/',render_image, name='render_image'),
       path('send/', SendTemplateMailView.as_view(), name='send_template'),
 ]
