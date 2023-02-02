@@ -151,8 +151,8 @@ STATIC_URL = env.str('STATIC_URL', default='static/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # https://ordinarycoders.com/blog/article/django-subdomains
-#ROOT_HOSTCONF = 'email_tracking.hosts'
-#DEFAULT_HOST = 'email'
+ROOT_HOSTCONF = 'email_tracking.hosts'
+DEFAULT_HOST = 'email'
 
 #PTRACK_SECRET = env.str('PTRACK_SECRET', default='rrtNPNc6Y48SkrDPfsVbY2lyUR0zpZH3')
 
