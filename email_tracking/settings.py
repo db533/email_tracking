@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'tracking_app.apps.TrackingAppConfig',
-	'django_hosts',
+	#'django_hosts',
 #	'ptrack',
 	'rest_framework',
 ]
@@ -151,8 +151,8 @@ STATIC_URL = env.str('STATIC_URL', default='static/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # https://ordinarycoders.com/blog/article/django-subdomains
-ROOT_HOSTCONF = 'email_tracking.hosts'
-DEFAULT_HOST = 'email'
+#ROOT_HOSTCONF = 'email_tracking.hosts'
+#DEFAULT_HOST = 'email'
 
 #PTRACK_SECRET = env.str('PTRACK_SECRET', default='rrtNPNc6Y48SkrDPfsVbY2lyUR0zpZH3')
 
@@ -174,5 +174,3 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
-
-APPEND_SLASH=False
