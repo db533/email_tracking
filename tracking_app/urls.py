@@ -28,7 +28,6 @@ from rest_framework import routers
 from .views import SendTemplateMailView , render_image
 
 urlpatterns = [
-      path('send/render_image/',render_image, name='render_image'),
       path('send', SendTemplateMailView.as_view(), name='send_template'),
-      path('send/', SendTemplateMailView.as_view(), name='send_template'),
+      path('send/render_image/',render_image, name='render_image'),
 ]
