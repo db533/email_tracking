@@ -22,7 +22,7 @@ router.register(r'groups', views.GroupViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns += [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
 
 from .views import SendTemplateMailView , render_image
