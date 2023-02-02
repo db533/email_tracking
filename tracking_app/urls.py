@@ -18,6 +18,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'send', views.SendTemplateMailView)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -29,5 +30,5 @@ from .views import SendTemplateMailView , render_image
 
 urlpatterns += [
       path('send/render_image/',render_image, name='render_image'),
-      path('send/', SendTemplateMailView.as_view(), name='send_template'),
+      #path('send/', SendTemplateMailView.as_view(), name='send_template'),
 ]
