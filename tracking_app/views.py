@@ -52,7 +52,7 @@ from django.template.loader import get_template
 
 
 class SendTemplateMailView(APIView):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         all_data = request.data
         #target_user_email = request.data.get('email')
         target_user_email = "db5331@gmail.com"
