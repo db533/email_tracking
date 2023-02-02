@@ -97,7 +97,7 @@ DATABASES = {
 		'NAME': env.str('db_name', default='email_tracking'),
 			'ENFORCE_SCHEMA': False,
 			'CLIENT': {
-				'host': env.str('mongodb_uri', default='mongodb+srv://GunaBot:Zalando@cluster0.ubw9u.mongodb.net/email_tracking?retryWrites=true&w=majority')
+				'host': env.str('mongodb_uri')
 			}
 		}
 	}
