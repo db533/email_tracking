@@ -9,22 +9,9 @@ def index(request):
     """View function for home page of site."""
 
     # Generate counts of some of the main objects
-    num_email_clicks = Email.objects.all().count()
-    target_user_email = "db5331@gmail.com"
-    mail_template = get_template("mail_template.html")
-    context_data_is = dict()
-    context_data_is["image_url"] = request.build_absolute_uri(("render_image"))
-    url_is = context_data_is["image_url"]
-    context_data_is['url_is'] = url_is
-    html_detail = mail_template.render(context_data_is)
-    subject, from_email, to = "Greetings !!", 'info@dundlabumi.lv', [target_user_email]
-    msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
-    msg.content_subtype = 'html'
-    msg_result = msg.send()
 
     context = {
         'num_email_clicks': num_email_clicks,
-        'msg_result' : msg_result,
 
     }
 
