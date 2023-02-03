@@ -79,13 +79,13 @@ class SaveDataView(generics.CreateAPIView):
         #subject = serializer.validated_data.get('subject')
         #recipient = serializer.validated_data.get('recipient')
         #body = serializer.validated_data.get('body')
-        body="Test body"
-        subject="Test subject"
-        recipient="db5331@gmail.com"
-        email = EmailMultiAlternatives(subject, body, to=[recipient])
-        email_result = email.send()
+        #body="Test body"
+        #subject="Test subject"
+        #recipient="db5331@gmail.com"
+        #email = EmailMultiAlternatives(subject, body, to=[recipient])
+        #email_result = email.send()
         serializer.save()
-        return Response({"message": "Email sent", "email_result": email_result})
+        #return Response({"message": "Email sent", "email_result": email_result})
 
 
 
