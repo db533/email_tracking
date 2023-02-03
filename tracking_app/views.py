@@ -41,7 +41,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 # ChatGPT suggestion
 from django.core.mail import EmailMultiAlternatives
-from django.contrib.staticfiles.templaters import static
+#from django.contrib.staticfiles.templaters import static
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import viewsets

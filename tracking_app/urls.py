@@ -31,3 +31,8 @@ urlpatterns = [
       path('send/render_image/',render_image, name='render_image'),
       path('send', SendTemplateMailView.as_view(), name='send_template'),
 ]
+from .views import EmailViewSet
+
+urlpatterns += [
+    path('api/emails/', EmailViewSet.as_view({'post': 'create'}), name='email-create'),
+]
