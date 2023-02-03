@@ -69,6 +69,17 @@ class EmailViewSet(viewsets.ViewSet):
         email = OutboundEmail.objects.create(recipient=recipient, subject=subject, body=body, status=False)
         return Response({"message": "Email sent", "email_id": email.id})
 
+from rest_framework import generics
+from .serializers import DataSerializer
+
+class SaveDataView(generics.CreateAPIView):
+    serializer_class = DataSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+
 def email_viewed(request, email_id):
     # update the email record to indicate that it was viewed
     email = OutboundEmail.objects.get(id=email_id)

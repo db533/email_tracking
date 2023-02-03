@@ -16,3 +16,8 @@ class EmailSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Email
         fields = ['subscriber_id', 'send_dt', 'open_dt', 'opened']
+
+class DataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OutboundEmail
+        fields = ('recipient', 'subject','body')

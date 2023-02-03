@@ -11,6 +11,13 @@ from django.conf.urls.static import static
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+from django.urls import path
+from .views import SaveDataView
+
+urlpatterns += [
+    path('api/save_data/', SaveDataView.as_view(), name='save_data'),
+]
+
 # Adding serializers for API usage in REST framework
 # https://www.django-rest-framework.org/tutorial/quickstart/
 from rest_framework import routers
@@ -18,7 +25,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'email', views.EmailViewSet)
+#router.register(r'email', views.SaveDataView)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -37,3 +44,4 @@ from .views import EmailViewSet
 #urlpatterns += [
 #    path('api/emails/', EmailViewSet.as_view({'post': 'create'}), name='email-create'),
 #]
+
