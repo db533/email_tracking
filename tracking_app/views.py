@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import *
 from rest_framework import status
+from django.template.loader import get_template
+from django.shortcuts import render
 
 # Create your views here.
 def index(request):
