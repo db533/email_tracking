@@ -76,7 +76,14 @@ class SaveDataView(generics.CreateAPIView):
     serializer_class = DataSerializer
 
     def perform_create(self, serializer):
+        recipient = request.data.get('recipient')
+        # get subject and body of the email
+        subject = request.data.get('subject')
+        body = request.data.get('body')
+        email = EmailMultiAlternatives(subject, body, to=[recipient])
+        email_result = email.send()
         serializer.save()
+        returnResponse({"message": "Email sent", "email_id": email.id, "email_result": email_result})
 
 
 
