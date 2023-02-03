@@ -31,3 +31,9 @@ urlpatterns += [
     #path('ptrack/', include('ptrack.urls')), # Variation on required code from https://github.com/indeedeng/django-ptrack
 ]
 
+from .views import EmailViewSet
+
+urlpatterns += [
+    path('api/emails/', EmailViewSet.as_view({'post': 'create'}), name='email-create'),
+    path('api/emails/<int:email_id>/viewed/', email_viewed, name='email-viewed'),
+]

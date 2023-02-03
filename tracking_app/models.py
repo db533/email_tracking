@@ -24,3 +24,14 @@ class UserModel(models.Model):
 
     def __str__(self):
         return self.email
+# ChatGPT suggestion
+class OutboundEmail(models.Model):
+    recipient = models.EmailField()
+    subject = models.CharField(max_length=255)
+    body = models.TextField()
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.subject

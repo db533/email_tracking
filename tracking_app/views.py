@@ -39,6 +39,41 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+# ChatGPT suggestion
+from django.core.mail import EmailMultiAlternatives
+from django.contrib.staticfiles.templaters import static
+from django.shortcuts import render
+from django.http import HttpResponse
+from rest_framework import viewsets
+from rest_framework.response import Response
+from .models import OutboundEmail
+
+class EmailViewSet(viewsets.ViewSet):
+    def create(self, request):
+        # get recipient email address
+        recipient = request.data.get('recipient')
+        # get subject and body of the email
+        subject = request.data.get('subject')
+        body = request.data.get('body')
+        # create email instance
+        email = EmailMultiAlternatives(subject, body, to=[recipient])
+        email.send()
+
+        # save the email record to the database
+        email = OutboundEmail.objects.create(recipient=recipient, subject=subject, body=body, status=False)
+        return Response({"message": "Email sent", "email_id": email.id})
+
+def email_viewed(request, email_id):
+    # update the email record to indicate that it was viewed
+    email = OutboundEmail.objects.get(id=email_id)
+    email.status = True
+    email.save()
+
+    # return a blank image to display in the email
+    image_data = open("blank.png", "rb").read()
+    return HttpResponse(image_data, content_type="image/png")
+
+
 # https://manojadhikari.medium.com/track-email-opened-status-django-rest-framework-5fcd1fbdecfb
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -87,3 +122,4 @@ def render_image(request):
         user.save()
         image.save(response, "PNG")
         return response
+
