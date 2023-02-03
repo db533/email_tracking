@@ -8,9 +8,21 @@ def index(request):
 
     # Generate counts of some of the main objects
     num_email_clicks = Email.objects.all().count()
+    target_user_email = "db5331@gmail.com"
+    mail_template = get_template("mail_template.html")
+    context_data_is = dict()
+    context_data_is["image_url"] = request.build_absolute_uri(("render_image"))
+    url_is = context_data_is["image_url"]
+    context_data_is['url_is'] = url_is
+    html_detail = mail_template.render(context_data_is)
+    subject, from_email, to = "Greetings !!", 'info@dundlabumi.lv', [target_user_email]
+    msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
+    msg.content_subtype = 'html'
+    msg_result = msg.send()
 
     context = {
         'num_email_clicks': num_email_clicks,
+        'msg_result' : msg_result,
 
     }
 
@@ -86,8 +98,6 @@ class SaveDataView(generics.CreateAPIView):
         #email = EmailMultiAlternatives(subject, body, to=[recipient])
         #email_result = email.send()
         serializer.save()
-        return Response({"message": "Email sent"}, status=status.HTTP_200_OK)
-
 
 
 def email_viewed(request, email_id):
