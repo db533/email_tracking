@@ -51,12 +51,17 @@ from .models import OutboundEmail
 class EmailViewSet(viewsets.ViewSet):
     def create(self, request):
         # get recipient email address
+        print()
         print('EmailViewSet view called.')
         recipient = request.data.get('recipient')
         # get subject and body of the email
         subject = request.data.get('subject')
         body = request.data.get('body')
         # create email instance
+
+        #recipient = "db5331@gmail.com"
+        #subject = "Test subject"
+        #body="Test body"
         email = EmailMultiAlternatives(subject, body, to=[recipient])
         email.send()
 
