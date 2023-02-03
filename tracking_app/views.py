@@ -63,11 +63,11 @@ class EmailViewSet(viewsets.ViewSet):
         #subject = "Test subject"
         #body="Test body"
         email = EmailMultiAlternatives(subject, body, to=[recipient])
-        email.send()
+        email_result = email.send()
 
         # save the email record to the database
         email = OutboundEmail.objects.create(recipient=recipient, subject=subject, body=body, status=False)
-        return Response({"message": "Email sent", "email_id": email.id})
+        return Response({"message": "Email sent", "email_id": email.id, "email_result" : email_result})
 
 from rest_framework import generics
 from .serializers import DataSerializer
