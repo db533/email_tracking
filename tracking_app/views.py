@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+from rest_framework import status
 
 # Create your views here.
 def index(request):
@@ -85,7 +86,7 @@ class SaveDataView(generics.CreateAPIView):
         #email = EmailMultiAlternatives(subject, body, to=[recipient])
         #email_result = email.send()
         serializer.save()
-        #return Response({"message": "Email sent"})
+        return Response({"message": "Email sent"}, status=status.HTTP_200_OK)
 
 
 
