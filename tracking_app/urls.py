@@ -18,6 +18,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'email', views.EmailViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -33,6 +34,6 @@ urlpatterns += [
 ]
 from .views import EmailViewSet
 
-urlpatterns += [
-    path('api/emails/', EmailViewSet.as_view({'post': 'create'}), name='email-create'),
-]
+#urlpatterns += [
+#    path('api/emails/', EmailViewSet.as_view({'post': 'create'}), name='email-create'),
+#]
