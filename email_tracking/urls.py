@@ -20,14 +20,20 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+urlpatterns += [
+    path('tracking_app/', include('tracking_app.urls')),
+    #path('ptrack/', include('ptrack.urls')), # Variation on required code from https://github.com/indeedeng/django-ptrack
+]
+
 #Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 urlpatterns += [
     path('', RedirectView.as_view(url='tracking_app/', permanent=True)),
 ]
 
-urlpatterns += [
-    path('tracking_app/', include('tracking_app.urls')),
-    #path('ptrack/', include('ptrack.urls')), # Variation on required code from https://github.com/indeedeng/django-ptrack
-]
+from tracking_app.views import SendTemplateMailView , render_image
 
+urlpatterns += [
+      path('send/render_image/',render_image, name='render_image'),
+      path('send', SendTemplateMailView.as_view(), name='send_template'),
+]

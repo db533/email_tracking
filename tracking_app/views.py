@@ -2,37 +2,64 @@ from django.shortcuts import render
 from .models import *
 from rest_framework import status
 from django.template.loader import get_template
-from django.shortcuts import render
 from django.core.mail import EmailMultiAlternatives
-
-# Create your views here.
-def index(request):
-    """View function for home page of site."""
-    subject, from_email, to = 'Subject of the email', 'info@dundlabumi.lv', 'db5331@gmail.com'
-    text_content = 'This is an important message.'
-    html_content = '<p>This is an <strong>important</strong> message.</p>'
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
-    msg_result=msg.send()
-
-    # Generate counts of some of the main objects
-    num_email_clicks = Email.objects.all().count()
-
-    context = {
-        'num_email_clicks': num_email_clicks,
-        'msg_result': msg_result,
-    }
-
-    # Render the HTML template index.html with the data in the context variable
-    return render(request, 'index.html', context=context)
 
 # Adding serializers for API usage in REST framework
 # https://www.django-rest-framework.org/tutorial/quickstart/
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer
+from rest_framework.response import Response
+from .serializers import UserSerializer, GroupSerializer, DataSerializer
+# ChatGPT suggestion
+#from django.core.mail import EmailMultiAlternatives
+#from django.contrib.staticfiles.templaters import static
+#from django.shortcuts import render
+from django.http import HttpResponse
+#from rest_framework import viewsets
 
+from rest_framework import generics
+#from .serializers import DataSerializer
+
+# https://manojadhikari.medium.com/track-email-opened-status-django-rest-framework-5fcd1fbdecfb
+from rest_framework.views import APIView
+#from rest_framework.response import Response
+#from rest_framework import status
+#from django.core.mail import EmailMultiAlternatives
+#from django.http import HttpResponse
+from PIL import Image
+from rest_framework.decorators import api_view
+from django.template import Context
+#from django.template.loader import get_template
+
+# Create your views here.
+def index(request):
+    """View function for home page of site."""
+    #subject, from_email, to = 'Subject of the email', 'info@dundlabumi.lv', 'db5331@gmail.com'
+    #text_content = 'This is an important message.'
+    #html_content = '<p>This is an <strong>important</strong> message.</p>'
+    #msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    #msg.attach_alternative(html_content, "text/html")
+    #msg_result=msg.send()
+
+    # Generate counts of some of the main objects
+    num_email_clicks = Email.objects.all().count()
+
+    context = {
+        'num_email_clicks': num_email_clicks,
+        #'subject' : subject,
+        #'from_email': from_email,
+        #'to': to,
+        #'text_content': text_content,
+        #'msg_result': msg_result,
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'index.html', context=context)
+
+
+# Adding serializers for API usage in REST framework
+# https://www.django-rest-framework.org/tutorial/quickstart/
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -50,14 +77,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 # ChatGPT suggestion
-from django.core.mail import EmailMultiAlternatives
-#from django.contrib.staticfiles.templaters import static
-from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework import viewsets
-from rest_framework.response import Response
-from .models import OutboundEmail
-
 class EmailViewSet(viewsets.ViewSet):
     def create(self, request):
         # get recipient email address
@@ -79,8 +98,6 @@ class EmailViewSet(viewsets.ViewSet):
         email = OutboundEmail.objects.create(recipient=recipient, subject=subject, body=body, status=False)
         return Response({"message": "Email sent", "email_id": email.id, "email_result" : email_result})
 
-from rest_framework import generics
-from .serializers import DataSerializer
 
 class SaveDataView(generics.CreateAPIView):
     serializer_class = DataSerializer
@@ -108,18 +125,8 @@ def email_viewed(request, email_id):
     return HttpResponse(image_data, content_type="image/png")
 
 
+
 # https://manojadhikari.medium.com/track-email-opened-status-django-rest-framework-5fcd1fbdecfb
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponse
-from PIL import Image
-from rest_framework.decorators import api_view
-from django.template import Context
-from django.template.loader import get_template
-
-
 class SendTemplateMailView(APIView):
     def post(self, request, *args, **kwargs):
         all_data = request.data
