@@ -129,9 +129,9 @@ def email_viewed(request, email_id):
 # https://manojadhikari.medium.com/track-email-opened-status-django-rest-framework-5fcd1fbdecfb
 class SendTemplateMailView(APIView):
     def post(self, request, *args, **kwargs):
-        all_data = request.data
-        #target_user_email = request.data.get('email')
-        target_user_email = "db5331@gmail.com"
+        #all_data = request.data
+        target_user_email = request.data.get('email')
+        #target_user_email = "db5331@gmail.com"
         mail_template = get_template("mail_template.html")
         context_data_is = dict()
         context_data_is["image_url"] = request.build_absolute_uri(("render_image"))
@@ -141,15 +141,16 @@ class SendTemplateMailView(APIView):
         subject, from_email, to = "Greetings !!", 'info@dundlabumi.lv', [target_user_email]
         msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
         msg.content_subtype = 'html'
-        msg.send()
+        msg_result=msg.send()
         response_dict={}
-        response_dict['request'] = request
-        response_dict['all_data'] = all_data
-        response_dict['request.headers'] = request.headers
+        #response_dict['request'] = request
+        #response_dict['all_data'] = all_data
+        #response_dict['request.headers'] = request.headers
         #response_dict['request.body'] = request.body
         response_dict['target_user_email']=target_user_email
-        response_dict['url_is'] = url_is
-        response_dict['from_email'] = from_email
+        #response_dict['url_is'] = url_is
+        #response_dict['from_email'] = from_email
+        response_dict['msg_result'] = msg_result
         response_dict['success'] = True
         return Response(response_dict)
 
