@@ -3,16 +3,24 @@ from .models import *
 from rest_framework import status
 from django.template.loader import get_template
 from django.shortcuts import render
+from django.core.mail import EmailMultiAlternatives
 
 # Create your views here.
 def index(request):
     """View function for home page of site."""
+    subject, from_email, to = 'Subject of the email', 'info@dundlabumi.lv', 'db5331@gmail.com'
+    text_content = 'This is an important message.'
+    html_content = '<p>This is an <strong>important</strong> message.</p>'
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg_result=msg.send()
 
     # Generate counts of some of the main objects
+    num_email_clicks = Email.objects.all().count()
 
     context = {
         'num_email_clicks': num_email_clicks,
-
+        'msg_result': msg_result,
     }
 
     # Render the HTML template index.html with the data in the context variable
