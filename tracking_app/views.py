@@ -134,7 +134,7 @@ class SendTemplateMailView(APIView):
         #target_user_email = "db5331@gmail.com"
         mail_template = get_template("mail_template.html")
         context_data_is = dict()
-        context_data_is["image_url"] = request.build_absolute_uri(("send/render_image"))
+        context_data_is["image_url"] = request.build_absolute_uri(("send/render_image/"))
         url_is = context_data_is["image_url"]
         context_data_is['url_is'] = url_is
         html_detail = mail_template.render(context_data_is)
