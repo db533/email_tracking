@@ -140,6 +140,7 @@ class SendTemplateMailView(APIView):
         context_data_is["image_url"] = request.build_absolute_uri(("send/render_image/"))
         url_is = context_data_is["image_url"]
         context_data_is['url_is'] = url_is
+        context_data_is['cid'] = email.id
         html_detail = mail_template.render(context_data_is)
         email.body = html_detail
         email.save()
