@@ -35,6 +35,6 @@ from tracking_app.views import SendTemplateMailView , render_image , render_imag
 
 urlpatterns += [
       path('send/render_image/',render_image, name='render_image'),
-      path('send/render_image2/<int:id>/',render_image2, name='render_image2'),
+      path('send/render_image2/<int:id>',render_image2, name='render_image2'),
       path('send', SendTemplateMailView.as_view(), name='send_template'),
 ]
