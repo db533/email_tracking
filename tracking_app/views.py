@@ -169,10 +169,10 @@ def render_image2(request, id):
     email.status = True
     email.save()
 
-    # Create 1x1 black pixel image
-    data = b'\x00\x00\x00\xff' * 1 * 1
+    image = Image.new('RGB', (20, 20))
+    image.save(response, "PNG")
 
-    response = HttpResponse(data, content_type='image/png')
+    #response = HttpResponse(data, content_type='image/png')
     return response
 
 @api_view()
