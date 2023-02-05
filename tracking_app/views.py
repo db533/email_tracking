@@ -166,8 +166,8 @@ from django.shortcuts import get_object_or_404
 
 def render_image2(request, id):
     email = OutboundEmail.objects.get(id=id)
-    image.status = True
-    image.save()
+    email.status = True
+    email.save()
 
     # Create 1x1 black pixel image
     data = b'\x00\x00\x00\xff' * 1 * 1
