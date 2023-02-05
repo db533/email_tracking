@@ -137,7 +137,7 @@ class SendTemplateMailView(APIView):
         mail_template = get_template("mail_template.html")
         email = OutboundEmail.objects.create(recipient=target_user_email, subject=subject,status=False)
         context_data_is = dict()
-        context_data_is["image_url"] = request.build_absolute_uri(("send/render_image/"))
+        context_data_is["image_url"] = request.build_absolute_uri(("send/render_image2/")) + "?id=" + str(email.id)
         url_is = context_data_is["image_url"]
         context_data_is['url_is'] = url_is
         context_data_is['cid'] = email.id
@@ -160,6 +160,20 @@ class SendTemplateMailView(APIView):
         response_dict['msg_result'] = msg_result
         response_dict['success'] = True
         return Response(response_dict)
+
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+
+def render_image2(request, id):
+    email = OutboundEmail.objects.get(id=id)
+    image.status = True
+    image.save()
+
+    # Create 1x1 black pixel image
+    data = b'\x00\x00\x00\xff' * 1 * 1
+
+    response = HttpResponse(data, content_type='image/png')
+    return response
 
 @api_view()
 def render_image(request):
