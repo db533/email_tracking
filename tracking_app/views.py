@@ -142,12 +142,14 @@ class SendTemplateMailView(APIView):
         msg = EmailMultiAlternatives(subject, html_detail, from_email, to)
         msg.content_subtype = 'html'
         msg_result=msg.send()
+        email = OutboundEmail.objects.create(recipient=target_user_email, subject=subject, body=html_detail, status=False)
         response_dict={}
         #response_dict['request'] = request
         #response_dict['all_data'] = all_data
         #response_dict['request.headers'] = request.headers
         #response_dict['request.body'] = request.body
         response_dict['target_user_email']=target_user_email
+        response_dict["email_id"] = email.id
         #response_dict['url_is'] = url_is
         #response_dict['from_email'] = from_email
         response_dict['msg_result'] = msg_result
