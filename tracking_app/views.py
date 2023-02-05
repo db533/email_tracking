@@ -169,7 +169,7 @@ def render_image2(request, id):
     email.status = True
     email.save()
 
-    image = Image.new('RGB', (20, 20))
+    image = Image.new('RGB', (0, 0))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
     image.save(response, "PNG")
 
