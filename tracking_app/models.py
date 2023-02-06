@@ -41,7 +41,7 @@ class Redirect(models.Model):
     target_url = models.CharField(max_length=255, help_text='The url to redirect to. Excludes the domain name.')
 
     def __str__(self):
-        return self.str(redirect_code)
+        return str(self.redirect_code)
 
 
 class Click(models.Model):
