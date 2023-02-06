@@ -48,7 +48,7 @@ class Click(models.Model):
     redirect_code = models.ForeignKey(Redirect, on_delete=models.SET_NULL, null=True, blank=False,
                                    help_text='Code that refers to a link that was clicked',
                                    verbose_name=('Redirect id code'))
-    click_dt = models.DateTimeField(auto_now=False, auto_now_add=False)
+    click_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
         return self.id
