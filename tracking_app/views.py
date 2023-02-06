@@ -179,9 +179,9 @@ def render_image2(request, id):
 from django.shortcuts import redirect
 
 def link(request, id):
-    redirect = Redirect.objects.get(redirect_code=id)
+    redirect_record = Redirect.objects.get(redirect_code=id)
     target_url=Redirect.target_url
     #redirect.save()
-    click = Click.objects.create(redirect_code=redirect.id)
+    click = Click.objects.create(redirect_code=redirect_record.id)
     return redirect(target_url)
 
