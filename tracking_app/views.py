@@ -176,14 +176,11 @@ def render_image2(request, id):
     #response = HttpResponse(data, content_type='image/png')
     return response
 
-@api_view()
-def render_image(request):
-    if request.method =='PUT':
-        image= Image.new('RGB', (20, 20))
-        response = HttpResponse(content_type="image/png" , status = status.HTTP_200_OK)
-        user = UserModel.objects.get(id = 1)
-        user.status = True
-        user.save()
-        image.save(response, "PNG")
-        return response
+from django.shortcuts import redirect
+
+def link(request, id):
+    redirect = Redirect.objects.get(redirect_code=id)
+    target_url=Redirect.target_url
+    click = Click.objects.create(redirect_code=redirect.redirect_code)
+    return redirect(target_url)
 

@@ -31,10 +31,10 @@ urlpatterns += [
     path('', RedirectView.as_view(url='tracking_app/', permanent=True)),
 ]
 
-from tracking_app.views import SendTemplateMailView , render_image , render_image2
+from tracking_app.views import SendTemplateMailView , render_image2, link
 
 urlpatterns += [
-      path('send/render_image/',render_image, name='render_image'),
       path('send/render_image2/<int:id>',render_image2, name='render_image2'),
+      path('link/<int:id>',link, name='link'),
       path('send', SendTemplateMailView.as_view(), name='send_template'),
 ]

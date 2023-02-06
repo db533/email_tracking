@@ -35,3 +35,20 @@ class OutboundEmail(models.Model):
 
     def __str__(self):
         return self.subject
+
+class Redirect(models.Model):
+    redirect_code = models.IntegerField(default=0, help_text='The ID to be used when calling this redirect.')
+    target_url = models.CharField(max_length=255, help_text='The url to redirect to. Excludes the domain name.')
+
+    def __str__(self):
+        return self.redirect_code
+
+
+class Click(models.Model):
+    redirect_code = models.ForeignKey(Redirect, on_delete=models.SET_NULL, null=True, blank=False,
+                                   help_text='Code that refers to a link that was clicked',
+                                   verbose_name=('Redirect id code'))
+    click_dt = models.DateTimeField(auto_now=False, auto_now_add=False)
+
+    def __str__(self):
+        return self.id
