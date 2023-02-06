@@ -180,7 +180,7 @@ from django.shortcuts import redirect
 
 def link(request, id):
     redirect_record = Redirect.objects.get(redirect_code=id)
-    target_url=Redirect.target_url
+    target_url=redirect_record.target_url
     #redirect.save()
     click = Click.objects.create(redirect_code=redirect_record.id)
     return redirect(target_url)
