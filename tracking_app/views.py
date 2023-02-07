@@ -189,6 +189,10 @@ def link(request, id):
     redirect_record = Redirect.objects.get(redirect_code=id)
     target_url=redirect_record.target_url
     #redirect_code_id=redirect_record.id
-    Click.objects.create(redirect_code_id=id)
+    session = request.session
+    session_id = request.session.session_key
+    Click.objects.create(redirect_code_id=id, session_id=session_id)
+
+
     return redirect(target_url)
 
