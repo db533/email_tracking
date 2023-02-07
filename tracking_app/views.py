@@ -192,7 +192,8 @@ def link(request, id):
     session = request.session
     session_id = request.session.session_key
     session_data = request.session.items()
-    Click.objects.create(redirect_code_id=id, session_id=session_id, session_data=session_data)
+    current_site_cookies = {k: v for k, v in request.COOKIES.items() if k.contains('dundlabumi.lv')}
+    Click.objects.create(redirect_code_id=id, session_id=session_id, session_data=session_data, cookies=current_site_cookies)
 
 
     return redirect(target_url)
