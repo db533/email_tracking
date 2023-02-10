@@ -58,8 +58,6 @@ class Click(models.Model):
                                    help_text='Code that refers to a link that was clicked',
                                    verbose_name=('Redirect id code'))
     session_id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
-    session_data = models.CharField(max_length=1000, default = "", help_text='All the session data.')
-    cookies = models.CharField(max_length=1000, default = "", help_text='All the cookies for the site.')
     click_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
