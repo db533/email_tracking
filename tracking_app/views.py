@@ -186,6 +186,9 @@ def render_image2(request, id):
 def page(request, id):
     # Get the session from the received request
     session_id = request.session.session_key
+    if not session_id:
+        request.session.create()
+        session_id = request.session.session_key
     Pageview.objects.create(page=id, session_id=session_id)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
