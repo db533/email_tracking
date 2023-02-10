@@ -202,12 +202,11 @@ from django.shortcuts import redirect
 def link(request, id):
     redirect_record = Redirect.objects.get(redirect_code=id)
     target_url=redirect_record.target_url
-    #redirect_code_id=redirect_record.id
-    session = request.session
     session_id = request.session.session_key
-    session_data = request.session.items()
-    current_site_cookies = request.COOKIES.items()
-    Click.objects.create(redirect_code_id=id, session_id=session_id, session_data=session_data, cookies=current_site_cookies)
+    if not session_id:
+        request.session.create()
+        session_id = request.session.session_key
+    Click.objects.create(redirect_code_id=id, session_id=session_id)
 
 
     return redirect(target_url)
