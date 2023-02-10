@@ -183,6 +183,17 @@ def render_image2(request, id):
     #response = HttpResponse(data, content_type='image/png')
     return response
 
+def page(request, id):
+    # Get the session from the received request
+    session_id = request.session.session_key
+    Pageview.objects.create(page=id, session_id=session_id)
+
+    image = Image.new('RGB', (1, 1), (255, 255, 255))
+    response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
+    image.save(response, "PNG")
+
+    return response
+
 from django.shortcuts import redirect
 
 def link(request, id):

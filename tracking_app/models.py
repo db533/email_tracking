@@ -43,6 +43,15 @@ class Redirect(models.Model):
     def __str__(self):
         return str(self.redirect_code)
 
+class Pageview(models.Model):
+    page = models.IntegerField(default=0, help_text='The ID of the Wordpress page that was displayed.')
+    view_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
+    session_id = models.CharField(max_length=64, default="",
+                                  help_text='The session id that was associated with this click.')
+
+    def __str__(self):
+        return str(self.page)
+
 
 class Click(models.Model):
     redirect_code = models.ForeignKey(Redirect, on_delete=models.SET_NULL, null=True, blank=False,
