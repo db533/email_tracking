@@ -62,3 +62,35 @@ class Click(models.Model):
 
     def __str__(self):
         return self.id
+
+class WooCategory(models.Model):
+    id = models.IntegerField(default=0, help_text='The ID of the Wordpress category.', primary_key=True)
+    name = models.CharField(max_length=100, help_text="The categories that exist in the website.")
+
+    def __str__(self):
+        return self.name
+
+class WooTag(models.Model):
+    id = models.IntegerField(default=0, help_text='The ID of the Wordpress tag.', primary_key=True)
+    name = models.CharField(max_length=100, help_text="A tag name that exist in the website.")
+
+    def __str__(self):
+        return self.name
+
+class WooProduct(models.Model):
+    id = models.IntegerField(default=0, help_text='The ID of the Wordpress product.', primary_key=True)
+    name = models.CharField(max_length=128, default = "", help_text='The name for the item.')
+    categories = models.ManyToManyField(WooCategory, through='ProductCategory')
+    tags = models.ManyToManyField(WooTag, through='ProductTag')
+
+    def __str__(self):
+        return self.name
+
+class ProductCategory(models.Model):
+    product = models.ForeignKey(WooProduct, on_delete=models.CASCADE)
+    category = models.ForeignKey(WooCategory, on_delete=models.CASCADE)
+
+class ProductTag(models.Model):
+    product = models.ForeignKey(WooProduct, on_delete=models.CASCADE)
+    tag = models.ForeignKey(WooTag, on_delete=models.CASCADE)
+

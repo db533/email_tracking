@@ -211,3 +211,20 @@ def link(request, id):
 
     return redirect(target_url)
 
+@api_view(['POST'])
+def wp_category_endpoint(request):
+    category_id = request.data.get('id')
+    category_name = request.data.get('name')
+
+    if category_id is None or category_name is None:
+        return Response({'error': 'id and name are required fields'},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        category = WooCategory.objects.get(id=category_id)
+        category.name = category_name
+        category.save()
+        return Response({'message': 'Category updated successfully'})
+    except Category.DoesNotExist:
+        Category.objects.create(id=category_id, name=category_name)
+        return Response({'message': 'Category created successfully'})
