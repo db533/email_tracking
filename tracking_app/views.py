@@ -225,6 +225,6 @@ def wp_category_endpoint(request):
         category.name = category_name
         category.save()
         return Response({'message': 'Category updated successfully'})
-    except Category.DoesNotExist:
-        Category.objects.create(id=category_id, name=category_name)
+    except:
+        WooCategory.objects.create(id=category_id, name=category_name)
         return Response({'message': 'Category created successfully'})
