@@ -44,7 +44,7 @@ from tracking_app.views import wp_category_endpoint
 # Adding patterns for Wordpress master data changes.
 urlpatterns += [
       #path('wp_data/product',render_image2, name='render_image2'),
-      path('wp_data/category',wp_category_endpoint, name='wp_category_endpoint'),
+      path('category',wp_category_endpoint, name='wp_category_endpoint'),
       #path('wp_data/tag',link, name='link'),
 
 ]
