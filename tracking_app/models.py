@@ -94,3 +94,10 @@ class ProductTag(models.Model):
     product = models.ForeignKey(WooProduct, on_delete=models.CASCADE)
     tag = models.ForeignKey(WooTag, on_delete=models.CASCADE)
 
+class WPID(models.Model):
+    wp_id = models.IntegerField(default=0, help_text='The ID of the Wordpress record.', primary_key=True)
+    post_type = models.CharField(max_length=20, default = "", help_text='Post type of the record.')
+    name = models.CharField(max_length=120, default="", help_text='Name of the record.')
+
+    def __str__(self):
+        return self.name
