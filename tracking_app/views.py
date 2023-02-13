@@ -198,9 +198,9 @@ def page(request, id):
         request.session.create()
         session_id = request.session.session_key
     #if not Session.get(session_id=session_id).exists():
-    Session.objects.update_or_create(session_id=session_id)
+    session=Session.objects.update_or_create(session_id=session_id)
 
-    pageview = Pageview.objects.create(page=id, session_id=session_id)
+    pageview = Pageview.objects.create(page=id, session_id=session)
     #pageview.sessions.add(session_id)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
