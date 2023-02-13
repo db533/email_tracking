@@ -197,7 +197,7 @@ def page(request, id):
     if not session_id:
         request.session.create()
         session_id = request.session.session_key
-    if not Session.get(id=session_id).exists():
+    if not Session.get(session_key=session_id).exists():
         Session.objects.create(id=session_id)
 
     pageview = Pageview.objects.create(page=id, session_id=session_id)
