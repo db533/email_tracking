@@ -165,20 +165,28 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
 def render_image2(request, id):
+    # Get the session from the received request
+    session = request.session
+    session_id = session.session_key
+    if not session_id:
+        request.session.create()
+        session_id = request.session.session_key
+
+    # Add a cookie to the session
+    session["email"] = email.recipient
+    session.save()
+    if not Session.get(id=session_id).exists():
+        Session.objects.create(id=session_id)
+
     email = OutboundEmail.objects.get(id=id)
     email.status = True
+    email.sessions.add(session_id)
     email.save()
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
     image.save(response, "PNG")
 
-    # Get the session from the received request
-    session = request.session
-
-    # Add a cookie to the session
-    session["email"] = email.recipient
-    session.save()
 
     #response = HttpResponse(data, content_type='image/png')
     return response
@@ -189,7 +197,11 @@ def page(request, id):
     if not session_id:
         request.session.create()
         session_id = request.session.session_key
-    Pageview.objects.create(page=id, session_id=session_id)
+    if not Session.get(id=session_id).exists():
+        Session.objects.create(id=session_id)
+
+    pageview = Pageview.objects.create(page=id, session_id=session_id)
+    pageview.sessions.add(session_id)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
@@ -206,25 +218,25 @@ def link(request, id):
     if not session_id:
         request.session.create()
         session_id = request.session.session_key
-    Click.objects.create(redirect_code_id=id, session_id=session_id)
-
+    click = Click.objects.create(redirect_code_id=id, session_id=session_id)
+    click.sessions.add(session_id)
 
     return redirect(target_url)
 
-@api_view(['POST'])
-def wp_category_endpoint(request):
-    category_id = request.data.get('id')
-    category_name = request.data.get('name')
+#@api_view(['POST'])
+#def wp_category_endpoint(request):
+#    category_id = request.data.get('id')
+#    category_name = request.data.get('name')
 
-    if category_id is None or category_name is None:
-        return Response({'error': 'id and name are required fields'},
-                        status=status.HTTP_400_BAD_REQUEST)
+#    if category_id is None or category_name is None:
+#        return Response({'error': 'id and name are required fields'},
+#                        status=status.HTTP_400_BAD_REQUEST)
 
-    try:
-        category = WooCategory.objects.get(id=category_id)
-        category.name = category_name
-        category.save()
-        return Response({'message': 'Category updated successfully'})
-    except:
-        WooCategory.objects.create(id=category_id, name=category_name)
-        return Response({'message': 'Category created successfully'})
+#    try:
+#        category = WooCategory.objects.get(id=category_id)
+#        category.name = category_name
+#        category.save()
+#        return Response({'message': 'Category updated successfully'})
+#    except:
+#        WooCategory.objects.create(id=category_id, name=category_name)
+#        return Response({'message': 'Category created successfully'})

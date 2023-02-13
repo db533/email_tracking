@@ -18,12 +18,21 @@ class Email(models.Model):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return self.subscriber_id
 
+class Session(models.Model):
+    id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.', primary_key=True)
+
+    def __str__(self):
+        return self.id
+
 class UserModel(models.Model):
     email = EmailField(max_length=254, blank=True, null=True)
-    status = models.BooleanField(default=False)
+    sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+                                      help_text='The list of session IDs associated with this user',
+                                      verbose_name=('Session ID list'))
 
     def __str__(self):
         return self.email
+
 # ChatGPT suggestion
 class OutboundEmail(models.Model):
     recipient = models.EmailField()
@@ -32,6 +41,7 @@ class OutboundEmail(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    sessions = models.ManyToManyField(Session)
 
     def __str__(self):
         return self.subject
@@ -46,6 +56,9 @@ class Redirect(models.Model):
 class Pageview(models.Model):
     page = models.IntegerField(default=0, help_text='The ID of the Wordpress page that was displayed.')
     view_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
+    sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+                                 help_text='The list of session IDs associated with this user',
+                                 verbose_name=('Session ID list'))
     session_id = models.CharField(max_length=64, default="",
                                   help_text='The session id that was associated with this click.')
 
@@ -58,41 +71,13 @@ class Click(models.Model):
                                    help_text='Code that refers to a link that was clicked',
                                    verbose_name=('Redirect id code'))
     session_id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
+    sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+                                 help_text='The list of session IDs associated with this user',
+                                 verbose_name=('Session ID list'))
     click_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
         return self.id
-
-class WooCategory(models.Model):
-    id = models.IntegerField(default=0, help_text='The ID of the Wordpress category.', primary_key=True)
-    name = models.CharField(max_length=100, help_text="The categories that exist in the website.")
-
-    def __str__(self):
-        return self.name
-
-class WooTag(models.Model):
-    id = models.IntegerField(default=0, help_text='The ID of the Wordpress tag.', primary_key=True)
-    name = models.CharField(max_length=100, help_text="A tag name that exist in the website.")
-
-    def __str__(self):
-        return self.name
-
-class WooProduct(models.Model):
-    id = models.IntegerField(default=0, help_text='The ID of the Wordpress product.', primary_key=True)
-    name = models.CharField(max_length=128, default = "", help_text='The name for the item.')
-    categories = models.ManyToManyField(WooCategory, through='ProductCategory')
-    tags = models.ManyToManyField(WooTag, through='ProductTag')
-
-    def __str__(self):
-        return self.name
-
-class ProductCategory(models.Model):
-    product = models.ForeignKey(WooProduct, on_delete=models.CASCADE)
-    category = models.ForeignKey(WooCategory, on_delete=models.CASCADE)
-
-class ProductTag(models.Model):
-    product = models.ForeignKey(WooProduct, on_delete=models.CASCADE)
-    tag = models.ForeignKey(WooTag, on_delete=models.CASCADE)
 
 class WPID(models.Model):
     wp_id = models.IntegerField(default=0, help_text='The ID of the Wordpress record.', primary_key=True)
@@ -101,3 +86,4 @@ class WPID(models.Model):
 
     def __str__(self):
         return self.name
+
