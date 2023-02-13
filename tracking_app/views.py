@@ -201,7 +201,7 @@ def page(request, id):
     Session.objects.update_or_create(session_id=session_id)
 
     pageview = Pageview.objects.create(page=id, session_id=session_id)
-    pageview.sessions.add(session_id)
+    #pageview.sessions.add(session_id)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
