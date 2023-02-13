@@ -19,7 +19,7 @@ class Email(models.Model):
         return self.subscriber_id
 
 class Session(models.Model):
-    id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.', primary_key=True)
+    session_id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.', primary_key=True)
 
     def __str__(self):
         return self.id
