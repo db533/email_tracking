@@ -18,20 +18,21 @@ class Email(models.Model):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return self.subscriber_id
 
-class Session(models.Model):
-    session_id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
-
-    def __str__(self):
-        return self.id
 
 class UserModel(models.Model):
     email = EmailField(max_length=254, blank=True, null=True)
-    sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
-                                      help_text='The list of session IDs associated with this user',
-                                      verbose_name=('Session ID list'))
+    #sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+    #                                  help_text='The list of session IDs associated with this user',
+    #                                  verbose_name=('Session ID list'))
 
     def __str__(self):
         return self.email
+
+class Session(models.Model):
+    session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
+
+    def __str__(self):
+        return self.session_key
 
 # ChatGPT suggestion
 class OutboundEmail(models.Model):
@@ -41,7 +42,7 @@ class OutboundEmail(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    sessions = models.ManyToManyField(Session)
+    #sessions = models.ManyToManyField(Session)
 
     def __str__(self):
         return self.subject
@@ -74,9 +75,9 @@ class Click(models.Model):
                                    help_text='Code that refers to a link that was clicked',
                                    verbose_name=('Redirect id code'))
     session_id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
-    sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
-                                 help_text='The list of session IDs associated with this user',
-                                 verbose_name=('Session ID list'))
+    #sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+    #                             help_text='The list of session IDs associated with this user',
+    #                             verbose_name=('Session ID list'))
     click_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):

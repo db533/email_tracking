@@ -1,3 +1,6 @@
+import logging
+logging.basicConfig(level=logging.INFO)
+
 from django.shortcuts import render
 from .models import *
 from rest_framework import status
@@ -197,10 +200,19 @@ def page(request, id):
     if not session_key:
         request.session.create()
         session_key = request.session.session_key
-    #if not Session.get(session_id=session_id).exists():
-    session=Session.objects.update_or_create(session_id=session_key)
-
+    session, created = Session.objects.update_or_create(session_key=session_key)
+    #logging.info("**** About to create Pageview...")
+    #logging.info("**** id: "+str(id))
+    #logging.info("**** session_key: " + str(session_key))
+    #logging.info("**** session: " + str(session))
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
+    #logging.info("**** Created Pageview.")
+    #logging.info("pageview:"+str(pageview))
+    #logging.info("pageview.pk:" + str(pageview.pk))
+    #logging.info("pageview.page:" + str(pageview.page))
+    #logging.info("pageview.session_key:" + str(pageview.session_key))
+
+    #pageview.save()
     #pageview.sessions.add(session_id)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
