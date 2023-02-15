@@ -28,12 +28,6 @@ class UserModel(models.Model):
     def __str__(self):
         return self.email
 
-class Session(models.Model):
-    session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
-
-    def __str__(self):
-        return self.session_key
-
 # ChatGPT suggestion
 class OutboundEmail(models.Model):
     recipient = models.EmailField()
@@ -57,9 +51,9 @@ class Redirect(models.Model):
 class Pageview(models.Model):
     page = models.IntegerField(default=0, help_text='The ID of the Wordpress page that was displayed.')
     view_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
-    session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
-                                 help_text='The session associated with this pageview',
-                                 verbose_name=('Session'))
+    #session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+    #                             help_text='The session associated with this pageview',
+    #                             verbose_name=('Session'))
     session_key = models.CharField(max_length=64, default="",
                                    help_text='The session id that was associated with this click.')
 
