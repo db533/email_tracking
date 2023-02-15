@@ -212,12 +212,15 @@ def page(request, id):
 from django.shortcuts import redirect
 
 def link(request, id):
-    redirect_record = Redirect.objects.get(redirect_code=id)
-    target_url=redirect_record.target_url
-    session_key = request.session.session_key
-    if not session_key:
+    if 'session_key' in request.COOKIES:
+        # If it does, set the session_key variable to the cookie value
+        session_key = request.COOKIES['session_key']
+    else:
         request.session.create()
         session_key = request.session.session_key
+        response.set_cookie('session_key', session_key)
+    redirect_record = Redirect.objects.get(redirect_code=id)
+    target_url=redirect_record.target_url
     session, created = Session.objects.update_or_create(session_key=session_key)
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
 

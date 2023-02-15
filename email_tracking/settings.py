@@ -65,6 +65,7 @@ MIDDLEWARE = [
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	#'django_hosts.middleware.HostsResponseMiddleware',
+	'tracking_app.middleware.SessionMiddleware',    # The middleware to save the session_key as a cookie
 ]
 
 ROOT_URLCONF = 'email_tracking.urls'
