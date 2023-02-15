@@ -200,8 +200,8 @@ def page(request, id):
     if not session_key:
         request.session.create()
         session_key = request.session.session_key
-    #session, created = Session.objects.update_or_create(session_key=session_key)
-    #pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
+    session, created = Session.objects.update_or_create(session_key=session_key)
+    pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
