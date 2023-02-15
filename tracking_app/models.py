@@ -56,9 +56,12 @@ class Redirect(models.Model):
 class Pageview(models.Model):
     page = models.IntegerField(default=0, help_text='The ID of the Wordpress page that was displayed.')
     view_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
-    session_id = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
-                                 help_text='The session ID associated with this pageview',
-                                 verbose_name=('Session ID'))
+    session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+                                 help_text='The session associated with this pageview',
+                                 verbose_name=('Session'))
+    session_key = models.CharField(max_length=64, default="",
+                                   help_text='The session id that was associated with this click.')
+
     #session_id = models.CharField(max_length=64, default="",
     #                              help_text='The session id that was associated with this click.')
 
