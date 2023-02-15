@@ -219,7 +219,7 @@ def link(request, id):
         request.session.create()
         session_key = request.session.session_key
     session, created = Session.objects.update_or_create(session_key=session_key)
-#    click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
+    click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
 
     return redirect(target_url)
 
