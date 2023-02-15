@@ -69,7 +69,18 @@ class Pageview(models.Model):
         return str(self.page)
 
 
+class Click(models.Model):
+    redirect_code = models.ForeignKey(Redirect, on_delete=models.SET_NULL, null=True, blank=False,
+                                   help_text='Code that refers to a link that was clicked',
+                                   verbose_name=('Redirect id code'))
+    session_id = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
+    sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+                                 help_text='The list of session IDs associated with this user',
+                                 verbose_name=('Session ID list'))
+    click_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
 
+    def __str__(self):
+        return self.id
 class WPID(models.Model):
     wp_id = models.IntegerField(default=0, help_text='The ID of the Wordpress record.', primary_key=True)
     post_type = models.CharField(max_length=20, default = "", help_text='Post type of the record.')
