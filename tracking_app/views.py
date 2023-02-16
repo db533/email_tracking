@@ -211,8 +211,8 @@ def page(request, id):
             session_key = request.session.session_key
         #session_key = "Created session reading from session"
         request.session['session_key'] = session_key
-    temp_message += "session_key = " + session_key
-    session, created = Session.objects.update_or_create(session_key=session_key)
+    temp_message += "session_key = " + str(session_key)
+    session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
