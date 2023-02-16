@@ -198,7 +198,7 @@ def page(request, id):
     # Get the session from the received request
     if request.session.has_key('session_key'):
         session_key = request.session['session_key']
-    if not request.session.has_key('session_key') or session_key == None:
+    if not request.session.has_key('session_key') or session_key is None:
         session_key = request.session.session_key
         if not session_key:
             request.session.create()
