@@ -134,11 +134,17 @@ class SendTemplateMailView(APIView):
     def post(self, request, *args, **kwargs):
         #all_data = request.data
         target_user_email = request.data.get('email')
+
+        # Check if this email is already defined for a subscriber, if not, add the user.
+        if UserModel.objects.filter(email=target_user_email).exists():
+            target_user = UserModel.objects.get(email=target_user_email)
+        else:
+            target_user = UserModel.objects.create(email=target_user_email, subscriber_id=999)
         from_email, to = 'info@dundlabumi.lv', [target_user_email]
         subject = request.data.get('subject')
         #target_user_email = "db5331@gmail.com"
         mail_template = get_template("mail_template.html")
-        email = OutboundEmail.objects.create(recipient=target_user_email, subject=subject,status=False)
+        email = OutboundEmail.objects.create(recipient=target_user_email, subject=subject,status=False, subscriber=target_user)
         context_data_is = dict()
         context_data_is["image_url"] = request.build_absolute_uri(("send/render_image2/")) + str(email.id)
         url_is = context_data_is["image_url"]
@@ -152,14 +158,8 @@ class SendTemplateMailView(APIView):
         msg_result=msg.send()
 
         response_dict={}
-        #response_dict['request'] = request
-        #response_dict['all_data'] = all_data
-        #response_dict['request.headers'] = request.headers
-        #response_dict['request.body'] = request.body
         response_dict['target_user_email']=target_user_email
         response_dict["email_id"] = email.id
-        #response_dict['url_is'] = url_is
-        #response_dict['from_email'] = from_email
         response_dict['msg_result'] = msg_result
         response_dict['success'] = True
         return Response(response_dict)
@@ -211,7 +211,11 @@ def page(request, id):
             session_key = request.session.session_key
         #session_key = "Created session reading from session"
         request.session['session_key'] = session_key
-    temp_message += "session_key = " + str(session_key)
+    if Session.objects.filter(session_key=session_key).exists():
+        session = Session.objects.get(session_key=session_key)
+    else:
+        session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
+    #temp_message += "session_key = " + str(session_key)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
@@ -219,9 +223,9 @@ def page(request, id):
 
     # Set the session key as a cookie in the response
     response.set_cookie('session_key', session_key)
-    temp_message += " response.cookies = " + str(response.cookies)
+    #temp_message += " response.cookies = " + str(response.cookies)
 
-    session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
+
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
     return response

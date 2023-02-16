@@ -27,6 +27,7 @@ class Session(models.Model):
         return self.session_key
 
 class UserModel(models.Model):
+    subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin')
     email = EmailField(max_length=254, blank=True, null=True)
     #sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
     #                                  help_text='The list of session IDs associated with this user',
@@ -38,6 +39,9 @@ class UserModel(models.Model):
 # ChatGPT suggestion
 class OutboundEmail(models.Model):
     recipient = models.EmailField()
+    subscriber = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, blank=False,
+                                      help_text='The subscriber to whom the email was sent',
+                                      verbose_name=('Email subscriber'))
     subject = models.CharField(max_length=255)
     body = models.TextField()
     status = models.BooleanField(default=False)
