@@ -212,8 +212,6 @@ def page(request, id):
         #session_key = "Created session reading from session"
         request.session['session_key'] = session_key
     temp_message += "session_key = " + str(session_key)
-    session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
-    pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
@@ -221,6 +219,10 @@ def page(request, id):
 
     # Set the session key as a cookie in the response
     response.set_cookie('session_key', session_key)
+    temp_message += " response.cookies = " + str(response.cookies)
+
+    session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
+    pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
     return response
 
