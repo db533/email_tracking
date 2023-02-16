@@ -196,15 +196,20 @@ def render_image2(request, id):
 
 def page(request, id):
     # Get the session from the received request
+    temp_message=""
     if request.session.has_key('session_key'):
         session_key = request.session['session_key']
         #session_key = "From cookie"
+        temp_message +="From cookie. "
     if not request.session.has_key('session_key') or session_key is None:
         session_key = request.session.session_key
         #session_key = "Reading from session"
+        temp_message += "No cookie. "
         if session_key is None:
+            temp_message += "key is None. "
             request.session.create()
             session_key = request.session.session_key
+            temp_message += "session_key = "+session_key
         #session_key = "Created session reading from session"
         request.session['session_key'] = session_key
     session, created = Session.objects.update_or_create(session_key=session_key)

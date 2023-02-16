@@ -21,6 +21,7 @@ class Email(models.Model):
 
 class Session(models.Model):
     session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
+    temp_message = models.CharField(max_length=255)
 
     def __str__(self):
         return self.session_key
