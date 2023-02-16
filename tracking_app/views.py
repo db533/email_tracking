@@ -202,11 +202,11 @@ def page(request, id):
     if not request.session.has_key('session_key') or session_key is None:
         session_key = request.session.session_key
         #session_key = "Reading from session"
-        #if session_key is None:
-        request.session.create()
-        session_key = request.session.session_key
+        if session_key is None:
+            request.session.create()
+            session_key = request.session.session_key
         #session_key = "Created session reading from session"
-        #request.session['session_key'] = session_key
+        request.session['session_key'] = session_key
     session, created = Session.objects.update_or_create(session_key=session_key)
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 

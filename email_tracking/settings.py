@@ -182,7 +182,7 @@ REST_FRAMEWORK = {
 APPEND_SLASH=False
 
 # Set the session engine to use cookies
-SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Set a unique key for signing cookies
 SESSION_COOKIE_NAME = 'dund_session_key'
