@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.fields import CharField, EmailField, UUIDField
+#from django.contrib.sessions.models import Session
 
 # Create your models here.
 
@@ -61,9 +62,6 @@ class Pageview(models.Model):
                                  verbose_name=('Session'))
     session_key = models.CharField(max_length=64, default="",
                                    help_text='The session id that was associated with this click.')
-
-    #session_id = models.CharField(max_length=64, default="",
-    #                              help_text='The session id that was associated with this click.')
 
     def __str__(self):
         return str(self.page)

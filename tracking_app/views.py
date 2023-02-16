@@ -196,16 +196,23 @@ def render_image2(request, id):
 
 def page(request, id):
     # Get the session from the received request
-    session_key = request.session.session_key
-    if not session_key:
-        request.session.create()
+    if request.session.has_key('session_key'):
+        session_key = request.session['session_key']
+    if not request.session.has_key('session_key') or session_key == None:
         session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+            session_key = request.session.session_key
+        request.session['session_key'] = session_key
     session, created = Session.objects.update_or_create(session_key=session_key)
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
     image.save(response, "PNG")
+
+    # Set the session key as a cookie in the response
+    response.set_cookie('session_key', session_key)
 
     return response
 
@@ -214,15 +221,18 @@ from django.shortcuts import redirect
 def link(request, id):
     redirect_record = Redirect.objects.get(redirect_code=id)
     target_url = redirect_record.target_url
-    if 'session_key' in request.COOKIES:
-        # If it does, set the session_key variable to the cookie value
-        session_key = request.COOKIES['session_key']
-    else:
-        request.session.create()
+    # Get the session from the received request
+    if request.session.has_key('session_key'):
+        session_key = request.session['session_key']
+    if not request.session.has_key('session_key') or session_key == None:
         session_key = request.session.session_key
-        response = redirect(target_url)
-        response.set_cookie('session_key', session_key)
+        if not session_key:
+            request.session.create()
+            session_key = request.session.session_key
+        request.session['session_key'] = session_key
     session, created = Session.objects.update_or_create(session_key=session_key)
+    response = redirect(target_url)
+    response.set_cookie('session_key', session_key)
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
 
     return redirect(target_url, response=response)
