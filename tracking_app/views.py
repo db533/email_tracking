@@ -209,9 +209,9 @@ def page(request, id):
             temp_message += "key is None. "
             request.session.create()
             session_key = request.session.session_key
-            temp_message += "session_key = "+session_key
         #session_key = "Created session reading from session"
         request.session['session_key'] = session_key
+    temp_message += "session_key = " + session_key
     session, created = Session.objects.update_or_create(session_key=session_key)
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
