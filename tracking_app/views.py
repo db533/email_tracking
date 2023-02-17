@@ -243,7 +243,7 @@ def link(request, id):
     if Session.objects.filter(session_key=session_key).exists():
         session = Session.objects.get(session_key=session_key)
     else:
-        session, created = Session.objects.update_or_create(session_key=session_key)
+        session = Session.objects.create(session_key=session_key)
     response = redirect(target_url)
     response.set_cookie('session_key', session_key)
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
