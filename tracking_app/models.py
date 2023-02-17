@@ -34,7 +34,7 @@ class List(models.Model):
         return self.name
 
 class UserModel(models.Model):
-    subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin')
+    subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin', primary_key=True)
     email = EmailField(max_length=254, blank=True, null=True)
     lists = models.ManyToManyField(List, related_name='users')
     #sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
