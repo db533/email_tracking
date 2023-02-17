@@ -49,7 +49,7 @@ class OutboundEmail(models.Model):
     recipient = models.EmailField()
     subscriber = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, blank=False,
                                       help_text='The subscriber to whom the email was sent',
-                                      verbose_name=('Email subscriber'), default=get_usermodel)
+                                      verbose_name=('Email subscriber'), default=1)
     subject = models.CharField(max_length=255)
     body = models.TextField()
     status = models.BooleanField(default=False)
