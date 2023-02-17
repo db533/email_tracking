@@ -20,6 +20,7 @@ class Email(models.Model):
         return self.subscriber_id
 
 class Session(models.Model):
+    id = models.IntegerField(default=0, help_text='The ID from the session', primary_key=True)
     session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
     temp_message = models.CharField(max_length=255)
 
