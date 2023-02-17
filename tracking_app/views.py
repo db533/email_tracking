@@ -136,7 +136,7 @@ class SendTemplateMailView(APIView):
         target_user_email = request.data.get('email')
         # Check if this email is already defined for a subscriber, if not, add the user.
         #if UserModel.objects.filter(email=target_user_email).exists():
-        target_user, = UserModel.objects.get_or_create(email=target_user_email)
+        target_user = UserModel.objects.get(email=target_user_email)
         #else:
         #    target_user = UserModel.objects.create(email=target_user_email, subscriber_id=999)
         from_email, to = 'info@dundlabumi.lv', [target_user_email]
