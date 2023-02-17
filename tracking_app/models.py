@@ -26,9 +26,17 @@ class Session(models.Model):
     def __str__(self):
         return self.session_key
 
+class List(models.Model):
+    list_id = models.IntegerField(default=0, help_text='The ID from the list in the Newsletter plugin')
+    name = models.CharField(max_length=255, help_text='The name of the list in the Newsletter plugin')
+
+    def __str__(self):
+        return self.name
+
 class UserModel(models.Model):
     subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin')
     email = EmailField(max_length=254, blank=True, null=True)
+    lists = models.ManyToManyField(List, related_name='users')
     #sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
     #                                  help_text='The list of session IDs associated with this user',
     #                                  verbose_name=('Session ID list'))
