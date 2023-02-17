@@ -88,7 +88,7 @@ class Click(models.Model):
     session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
     session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
                                  help_text='The list of session IDs associated with this user',
-                                 verbose_name=('Session ID list'), default=1)
+                                 verbose_name=('Session ID list'))
     click_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
