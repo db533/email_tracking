@@ -240,7 +240,11 @@ def link(request, id):
             request.session.create()
             session_key = request.session.session_key
         request.session['session_key'] = session_key
-    session, created = Session.objects.update_or_create(session_key=session_key)
+    if Session.objects.filter(session_key=session_key).exists():
+        session = Session.objects.get(session_key=session_key)
+    else:
+        temp_message = "Link. Session did not exist"
+        session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
     response = redirect(target_url)
     response.set_cookie('session_key', session_key)
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
