@@ -33,13 +33,23 @@ class List(models.Model):
     def __str__(self):
         return self.name
 
+class UserModel(models.Model):
+    subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin', primary_key=True)
+    email = EmailField(max_length=254, blank=True, null=True)
+    lists = models.ManyToManyField(List, related_name='users')
+    #sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+    #                                  help_text='The list of session IDs associated with this user',
+    #                                  verbose_name=('Session ID list'))
+
+    def __str__(self):
+        return self.email
 
 # ChatGPT suggestion
 class OutboundEmail(models.Model):
     recipient = models.EmailField()
-    #subscriber = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, blank=False,
-    #                                  help_text='The subscriber to whom the email was sent',
-    #                                  verbose_name=('Email subscriber'), default=1)
+    subscriber = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, blank=False,
+                                      help_text='The subscriber to whom the email was sent',
+                                      verbose_name=('Email subscriber'), default=1)
     subject = models.CharField(max_length=255)
     body = models.TextField()
     status = models.BooleanField(default=False)
