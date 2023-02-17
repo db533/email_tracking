@@ -19,13 +19,13 @@ class Email(models.Model):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return self.subscriber_id
 
-class Session(models.Model):
-    id = models.IntegerField(default=0, help_text='The ID from the session', primary_key=True)
-    session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
-    temp_message = models.CharField(max_length=255)
+#class Session(models.Model):
+#    id = models.IntegerField(default=0, help_text='The ID from the session', primary_key=True)
+#    session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
+#    temp_message = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.session_key
+#    def __str__(self):
+#        return self.session_key
 
 class List(models.Model):
     list_id = models.IntegerField(default=0, help_text='The ID from the list in the Newsletter plugin')
