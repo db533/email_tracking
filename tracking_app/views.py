@@ -167,30 +167,28 @@ def render_image2(request, id):
     # Get the session from the received request
     if request.session.has_key('session_key'):
         session_key = request.session['session_key']
-    #if not request.session.has_key('session_key') or session_key == None:
-    #    session_key = request.session.session_key
-    #    if not session_key:
-    #        request.session.create()
-    #        session_key = request.session.session_key
-    #    request.session['session_key'] = session_key
-    #if Session.objects.filter(session_key=session_key).exists():
-    #    session = Session.objects.get(session_key=session_key)
-    #else:
-    #    session = Session.objects.create(session_key=session_key)
+    if not request.session.has_key('session_key') or session_key == None:
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+            session_key = request.session.session_key
+        request.session['session_key'] = session_key
+    if Session.objects.filter(session_key=session_key).exists():
+        session = Session.objects.get(session_key=session_key)
+    else:
+        session = Session.objects.create(session_key=session_key)
 
     # Get the email by the ID
-    #email = OutboundEmail.objects.get(id=id)
-    #email.status = True
-    #email.save()
+    email = OutboundEmail.objects.get(id=id)
+    email.status = True
+    email.save()
 
     # Get the UserModel for the email address
-    #email_recipient = UserModel.objects.get(email=email.recipient)
+    email_recipient = UserModel.objects.get(email=email.recipient)
 
     # Add the session to the UserModel
-    #email_recipient.sessions = session
-    #email_recipient.save()
-
-    #email.sessions.add(session_id)
+    email_recipient.sessions = session
+    email_recipient.save()
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
