@@ -244,7 +244,7 @@ def link(request, id):
         session = Session.objects.get(session_key=session_key)
     else:
         latest_id=Session.objects.latest('id')
-        session = Session.objects.create(session_key=session_key, id=(latest_id+1)
+        session = Session.objects.create(session_key=session_key, id=(latest_id+1))
     response = redirect(target_url)
     response.set_cookie('session_key', session_key)
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
