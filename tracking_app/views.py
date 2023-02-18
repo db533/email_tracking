@@ -176,32 +176,19 @@ def render_image2(request, id):
     if Session.objects.filter(session_key=session_key).exists():
         session = Session.objects.get(session_key=session_key)
     else:
-        #latest_id=Session.objects.latest('id')
         session = Session.objects.create(session_key=session_key)
 
-
-    # Get the session from the received request
-    #session = request.session
-    #session_id = session.session_key
-    #if not session_id:
-    #    request.session.create()
-    #    session_id = request.session.session_key
-
     # Get the email by the ID
-    email = OutboundEmail.objects.get(id=id)
-    email.status = True
-    email.save()
+    #email = OutboundEmail.objects.get(id=id)
+    #email.status = True
+    #email.save()
 
     # Get the UserModel for the email address
-    email_recipient = UserModel.objects.get(email=email.recipient)
-
-    # Add a cookie to the session with the subscriber_id, called sid
-    #request.session['sid'] = email_recipient.subscriber_id
-    #session.save()
+    #email_recipient = UserModel.objects.get(email=email.recipient)
 
     # Add the session to the UserModel
-    email_recipient.sessions = session
-    email_recipient.save()
+    #email_recipient.sessions = session
+    #email_recipient.save()
 
     #email.sessions.add(session_id)
 
