@@ -202,7 +202,7 @@ def render_image2(request, id):
     #    Session.objects.create(id=session_id)
 
     # Add the session to the UserModel
-    email_recipient.session = session
+    email_recipient.sessions = session
     email_recipient.save()
 
     #email.sessions.add(session_id)
