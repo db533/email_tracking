@@ -173,10 +173,10 @@ def render_image2(request, id):
             request.session.create()
             session_key = request.session.session_key
         request.session['session_key'] = session_key
-    if Session.objects.filter(session_key=session_key).exists():
-        session = Session.objects.get(session_key=session_key)
-    else:
-        session = Session.objects.create(session_key=session_key)
+    #if Session.objects.filter(session_key=session_key).exists():
+    #    session = Session.objects.get(session_key=session_key)
+    #else:
+    #    session = Session.objects.create(session_key=session_key)
 
     # Get the email by the ID
     #email = OutboundEmail.objects.get(id=id)
