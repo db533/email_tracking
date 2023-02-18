@@ -196,8 +196,8 @@ def render_image2(request, id):
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
     image.save(response, "PNG")
 
-    response.set_cookie('session_key', session_key)
-    response.set_cookie('sid', email_recipient.subscriber_id)
+    #response.set_cookie('session_key', session_key)
+    #response.set_cookie('sid', email_recipient.subscriber_id)
 
     #response = HttpResponse(data, content_type='image/png')
     return response
