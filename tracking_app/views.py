@@ -196,10 +196,8 @@ def render_image2(request, id):
     email_recipient = UserModel.objects.get(email=email.recipient)
 
     # Add a cookie to the session with the subscriber_id, called sid
-    session["sid"] = email_recipient.subscriber_id
-    session.save()
-    #if not Session.get(id=session_id).exists():
-    #    Session.objects.create(id=session_id)
+    #request.session['sid'] = email_recipient.subscriber_id
+    #session.save()
 
     # Add the session to the UserModel
     email_recipient.sessions = session
@@ -210,6 +208,9 @@ def render_image2(request, id):
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
     image.save(response, "PNG")
+
+    response.set_cookie('session_key', session_key)
+    response.set_cookie('sid', email_recipient.subscriber_id)
 
     #response = HttpResponse(data, content_type='image/png')
     return response
