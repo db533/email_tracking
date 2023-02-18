@@ -167,12 +167,12 @@ def render_image2(request, id):
     # Get the session from the received request
     if request.session.has_key('session_key'):
         session_key = request.session['session_key']
-    if not request.session.has_key('session_key') or session_key == None:
-        session_key = request.session.session_key
-        if not session_key:
-            request.session.create()
-            session_key = request.session.session_key
-        request.session['session_key'] = session_key
+    #if not request.session.has_key('session_key') or session_key == None:
+    #    session_key = request.session.session_key
+    #    if not session_key:
+    #        request.session.create()
+    #        session_key = request.session.session_key
+    #    request.session['session_key'] = session_key
     #if Session.objects.filter(session_key=session_key).exists():
     #    session = Session.objects.get(session_key=session_key)
     #else:
