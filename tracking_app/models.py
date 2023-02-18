@@ -56,7 +56,7 @@ class OutboundEmail(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    sessions = models.ManyToManyField(Session)
+    #sessions = models.ManyToManyField(Session)
 
     def __str__(self):
         return self.subject
