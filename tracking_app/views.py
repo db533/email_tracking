@@ -164,20 +164,6 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
 def render_image2(request, id):
-    # Get the session from the received request
-    if request.session.has_key('session_key'):
-        session_key = request.session['session_key']
-    if not request.session.has_key('session_key') or session_key == None:
-        session_key = request.session.session_key
-        if not session_key:
-            request.session.create()
-            session_key = request.session.session_key
-        request.session['session_key'] = session_key
-    if Session.objects.filter(session_key=session_key).exists():
-        session = Session.objects.get(session_key=session_key)
-    else:
-        session = Session.objects.create(session_key=session_key)
-
     # Get the email by the ID
     email = OutboundEmail.objects.get(id=id)
     email.status = True
@@ -186,9 +172,29 @@ def render_image2(request, id):
     # Get the UserModel for the email address
     email_recipient = UserModel.objects.get(email=email.recipient)
 
-    # Add the session to the UserModel
-    email_recipient.sessions = session
-    email_recipient.save()
+    # Check if a session_key is associated with this user.
+    user_session_key = email_recipient.sessions
+    if user_session_key != None:
+        session_key = user_session_key
+        # Set the current session_key in case it differs.
+        request.session['session_key'] = session_key
+    else:
+        # The session_key has not been saved.
+        # Check if there is a cookie that provides a session_key
+        if request.session.has_key('session_key'):
+            session_key = request.session['session_key']
+        if not request.session.has_key('session_key') or session_key == None:
+            session_key = request.session.session_key
+            if not session_key:
+                request.session.create()
+                session_key = request.session.session_key
+        if Session.objects.filter(session_key=session_key).exists():
+            session = Session.objects.get(session_key=session_key)
+        else:
+            session = Session.objects.create(session_key=session_key)
+        # Add the session to the UserModel
+        email_recipient.sessions = session
+        email_recipient.save()
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
@@ -197,7 +203,6 @@ def render_image2(request, id):
     #response.set_cookie('session_key', session_key)
     #response.set_cookie('sid', email_recipient.subscriber_id)
 
-    #response = HttpResponse(data, content_type='image/png')
     return response
 
 def page(request, id):
