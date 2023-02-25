@@ -252,11 +252,11 @@ def link(request, id):
         session_key = request.session['session_key']
     if not 'session_key' in request.session.keys() or session_key == None:
         session_key = request.session.session_key
-        if not session_key:
+        #if not session_key:
             #request.session.create()
-            request.session.cycle_key()
-            session_key = request.session.session_key
-        request.session['session_key'] = session_key
+            #request.session.cycle_key()
+            #session_key = request.session.session_key
+        #request.session['session_key'] = session_key
     session = Session.objects.get(session_key=session_key)
     #if Session.objects.filter(session_key=session_key).exists():
     #    session = Session.objects.get(session_key=session_key)
