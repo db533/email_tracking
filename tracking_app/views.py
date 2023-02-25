@@ -256,13 +256,14 @@ def link(request, id):
         temp_message += "session_key missing or None. "
         request.session.create()
         session_key = request.session.session_key
-        request.session.save()
         #if not session_key:
             #request.session.create()
             #request.session.cycle_key()
             #session_key = request.session.session_key
-        #request.session['session_key'] = session_key
-    session = Session.objects.get(session_key=session_key)
+        request.session['session_key'] = session_key
+    #session = Session.objects.get(session_key=session_key)
+    if session_key == None:
+        temp_message += "session_key still None. "
     if Session.objects.filter(session_key=session_key).exists():
         session = Session.objects.get(session_key=session_key)
     else:
