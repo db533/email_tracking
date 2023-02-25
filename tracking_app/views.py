@@ -249,9 +249,9 @@ def link(request, id):
     redirect_record = Redirect.objects.get(redirect_code=id)
     target_url = redirect_record.target_url
     # Get the session from the received request
-    if request.session.has_key('session_key'):
+    if 'session_key' in request.session.keys():
         session_key = request.session['session_key']
-    if not request.session.has_key('session_key') or session_key == None:
+    if not 'session_key' in request.session.keys() or session_key == None:
         session_key = request.session.session_key
         if not session_key:
             request.session.create()
