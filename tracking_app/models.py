@@ -78,6 +78,8 @@ class Pageview(models.Model):
     session_key = models.CharField(max_length=64, default="",
                                    help_text='The session id that was associated with this click.')
 
+    temp_message = models.CharField(max_length=255)
+
     def __str__(self):
         return str(self.page)
 
@@ -91,6 +93,7 @@ class Click(models.Model):
                                  help_text='The list of session IDs associated with this user',
                                  verbose_name=('Session ID list'))
     click_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
+    temp_message = models.CharField(max_length=255)
 
     def __str__(self):
         return self.id
