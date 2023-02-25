@@ -208,11 +208,13 @@ def render_image2(request, id):
 def page(request, id):
     # Get the session from the received request
     temp_message=""
-    if request.session.has_key('session_key'):
+    #if request.session.has_key('session_key'):
+    if 'session_key' in request.session.keys():
         session_key = request.session['session_key']
         #session_key = "From cookie"
         temp_message +="From cookie. "
-    if not request.session.has_key('session_key') or session_key is None:
+    #if not request.session.has_key('session_key') or session_key is None:
+    if not 'session_key' in request.session.keys() or session_key is None:
         session_key = request.session.session_key
         #session_key = "Reading from session"
         temp_message += "No cookie. "
