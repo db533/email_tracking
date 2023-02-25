@@ -256,17 +256,17 @@ def link(request, id):
         temp_message += "session_key missing or None. "
         request.session.create()
         session_key = request.session.session_key
+        request.session.save()
         #if not session_key:
             #request.session.create()
             #request.session.cycle_key()
             #session_key = request.session.session_key
         #request.session['session_key'] = session_key
     session = Session.objects.get(session_key=session_key)
-    #if Session.objects.filter(session_key=session_key).exists():
-    #    session = Session.objects.get(session_key=session_key)
-    #else:1
-    #    #latest_id+1=Session.objects.latest('id')
-    #    session = Session.objects.create(session_key=session_key)
+    if Session.objects.filter(session_key=session_key).exists():
+        session = Session.objects.get(session_key=session_key)
+    else:
+        session = Session.objects.create(session_key=session_key)
     response = redirect(target_url)
     if session_key is not None:
         response.set_cookie('session_key', session_key)
