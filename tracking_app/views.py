@@ -34,6 +34,7 @@ from PIL import Image
 from rest_framework.decorators import api_view
 from django.template import Context
 #from django.template.loader import get_template
+from django.contrib.sessions.models import Session
 
 # Create your views here.
 def index(request):
@@ -221,6 +222,7 @@ def page(request, id):
             request.session.create()
             session_key = request.session.session_key
         request.session['session_key'] = session_key
+    session = Session.objects.get(session_key=session_key)
     #if Session.objects.filter(session_key=session_key).exists():
     #    session = Session.objects.get(session_key=session_key)
     #else:
@@ -232,9 +234,9 @@ def page(request, id):
     image.save(response, "PNG")
 
     # Set the session key as a cookie in the response
-    response.set_cookie('session_key', session_key)
+    if session_key is not None:
+        response.set_cookie('session_key', session_key)
     #temp_message += " response.cookies = " + str(response.cookies)
-
 
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
 
