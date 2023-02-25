@@ -210,15 +210,18 @@ def page(request, id):
     # Get the session from the received request
     temp_message=""
     request.session.save()
-    if 'session_key' in request.session:
-        session_key = request.session['session_key']
+    if 'sid' in request.session:
+        session_key = request.session['sid']
         temp_message +="From cookie. "
-    if not 'session_key' in request.session or session_key is None:
+        request.session = session_key
+        request.session.save()
+    if not 'sid' in request.session or session_key is None:
         session_key = request.session.session_key
         temp_message += "No cookie. "
         if session_key is None:
             temp_message += "key is None. "
             request.session.create()
+            request.session.save()
             session_key = request.session.session_key
         request.session['session_key'] = session_key
     if session_key == None:
@@ -234,7 +237,7 @@ def page(request, id):
 
     # Set the session key as a cookie in the response
     if session_key is not None:
-        response.set_cookie('session_key', session_key)
+        response.set_cookie('sid', session_key)
     #temp_message += " response.cookies = " + str(response.cookies)
 
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session, temp_message=temp_message)
@@ -248,11 +251,11 @@ def link(request, id):
     redirect_record = Redirect.objects.get(redirect_code=id)
     target_url = redirect_record.target_url
     # Get the session from the received request
-    if 'session_key' in request.session:
-        session_key = request.session['session_key']
+    if 'sid' in request.session:
+        session_key = request.session['sid']
         temp_message += "session_key present in request.session. "
         request.session.save()
-    if not 'session_key' in request.session or session_key == None:
+    if not 'sid' in request.session or session_key == None:
         temp_message += "session_key missing or None. "
         request.session.create()
         request.session.save()
@@ -271,7 +274,7 @@ def link(request, id):
         session = Session.objects.create(session_key=session_key)
     response = redirect(target_url)
     if session_key is not None:
-        response.set_cookie('session_key', session_key)
+        response.set_cookie('sid', session_key)
         temp_message += "Setting cookie. "
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session, temp_message = temp_message)
 
