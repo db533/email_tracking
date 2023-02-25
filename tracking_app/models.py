@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.fields import CharField, EmailField, UUIDField
 #from django.contrib.sessions.models import Session
+from djongo.models.fields import ObjectIdField
 
 # Create your models here.
 
@@ -19,14 +20,14 @@ class Email(models.Model):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return self.subscriber_id
 
-#class Session(models.Model):
-#    _id = models.ObjectIdField(auto_created=True, unique=True, primary_key=True)
-#    id = models.IntegerField(default=0, help_text='The ID from the session', primary_key=True)
-#    session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
-#    temp_message = models.CharField(max_length=255)
+class Session(models.Model):
+    _id = ObjectIdField(auto_created=True, unique=True, primary_key=True)
+    #id = models.IntegerField(default=0, help_text='The ID from the session', primary_key=True)
+    session_key = models.CharField(max_length=64, default = "", help_text='The session id that was associated with this click.')
+    temp_message = models.CharField(max_length=255)
 
-#    def __str__(self):
-#        return self.session_key
+    def __str__(self):
+        return self.session_key
 
 class List(models.Model):
     list_id = models.IntegerField(default=0, help_text='The ID from the list in the Newsletter plugin')
@@ -39,9 +40,9 @@ class UserModel(models.Model):
     subscriber_id = models.IntegerField(default=0, help_text='The subscriber ID from the Newsletter plugin', primary_key=True)
     email = EmailField(max_length=254, blank=True, null=True)
     lists = models.ManyToManyField(List, related_name='users')
-    #sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
-    #                                  help_text='The list of session IDs associated with this user',
-    #                                  verbose_name=('Session ID list'))
+    sessions = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+                                      help_text='The list of session IDs associated with this user',
+                                      verbose_name=('Session ID list'))
 
     def __str__(self):
         return self.email
@@ -57,7 +58,7 @@ class OutboundEmail(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    #sessions = models.ManyToManyField(Session)
+    sessions = models.ManyToManyField(Session)
 
     def __str__(self):
         return self.subject
@@ -72,9 +73,9 @@ class Redirect(models.Model):
 class Pageview(models.Model):
     page = models.IntegerField(default=0, help_text='The ID of the Wordpress page that was displayed.')
     view_dt = models.DateTimeField(auto_now=False, auto_now_add=True)
-    #session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
-    #                             help_text='The session associated with this pageview',
-    #                             verbose_name=('Session'))
+    session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, blank=False,
+                                 help_text='The session associated with this pageview',
+                                 verbose_name=('Session'))
     session_key = models.CharField(max_length=64, default="",
                                    help_text='The session id that was associated with this click.')
 

@@ -188,12 +188,12 @@ def render_image2(request, id):
             if not session_key:
                 request.session.create()
                 session_key = request.session.session_key
-        #if Session.objects.filter(session_key=session_key).exists():
-        #    session = Session.objects.get(session_key=session_key)
-        #else:
-        #    session = Session.objects.create(session_key=session_key)
+        if Session.objects.filter(session_key=session_key).exists():
+            session = Session.objects.get(session_key=session_key)
+        else:
+            session = Session.objects.create(session_key=session_key)
         # Add the session to the UserModel
-        #email_recipient.sessions = session
+        email_recipient.sessions = session
         email_recipient.save()
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
@@ -224,10 +224,10 @@ def page(request, id):
             session_key = request.session.session_key
         #session_key = "Created session reading from session"
         request.session['session_key'] = session_key
-    #if Session.objects.filter(session_key=session_key).exists():
-    #    session = Session.objects.get(session_key=session_key)
-    #else:
-    #    session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
+    if Session.objects.filter(session_key=session_key).exists():
+        session = Session.objects.get(session_key=session_key)
+    else:
+        session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
     temp_message += "session_key = " + str(session_key)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
@@ -257,11 +257,11 @@ def link(request, id):
             request.session.create()
             session_key = request.session.session_key
         request.session['session_key'] = session_key
-    #if Session.objects.filter(session_key=session_key).exists():
-    #    session = Session.objects.get(session_key=session_key)
-    #else:
-    #    #latest_id+1=Session.objects.latest('id')
-    #    session = Session.objects.create(session_key=session_key)
+    if Session.objects.filter(session_key=session_key).exists():
+        session = Session.objects.get(session_key=session_key)
+    else:
+        #latest_id+1=Session.objects.latest('id')
+        session = Session.objects.create(session_key=session_key)
     response = redirect(target_url)
     response.set_cookie('session_key', session_key)
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session)
