@@ -209,12 +209,11 @@ def render_image2(request, id):
 def page(request, id):
     # Get the session from the received request
     temp_message=""
-    #if request.session.has_key('session_key'):
-    if 'session_key' in request.session.keys():
+    request.session.save()
+    if 'session_key' in request.session:
         session_key = request.session['session_key']
         temp_message +="From cookie. "
-    #if not request.session.has_key('session_key') or session_key is None:
-    if not 'session_key' in request.session.keys() or session_key is None:
+    if not 'session_key' in request.session or session_key is None:
         session_key = request.session.session_key
         temp_message += "No cookie. "
         if session_key is None:
@@ -222,12 +221,12 @@ def page(request, id):
             request.session.create()
             session_key = request.session.session_key
         request.session['session_key'] = session_key
-    session = Session.objects.get(session_key=session_key)
-    #if Session.objects.filter(session_key=session_key).exists():
-    #    session = Session.objects.get(session_key=session_key)
-    #else:
-    #    session, created = Session.objects.update_or_create(session_key=session_key, temp_message=temp_message)
-    temp_message += "session_key = " + str(session_key)
+    if session_key == None:
+        temp_message += "session_key still None. "
+    if Session.objects.filter(session_key=session_key).exists():
+        session = Session.objects.get(session_key=session_key)
+    else:
+        session = Session.objects.create(session_key=session_key)
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
@@ -238,7 +237,7 @@ def page(request, id):
         response.set_cookie('session_key', session_key)
     #temp_message += " response.cookies = " + str(response.cookies)
 
-    pageview = Pageview.objects.create(page=id, session_key=session_key, session=session)
+    pageview = Pageview.objects.create(page=id, session_key=session_key, session=session, temp_message=temp_message)
 
     return response
 
