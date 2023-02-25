@@ -252,9 +252,11 @@ def link(request, id):
     if 'session_key' in request.session:
         session_key = request.session['session_key']
         temp_message += "session_key present in request.session. "
+        request.session.save()
     if not 'session_key' in request.session or session_key == None:
         temp_message += "session_key missing or None. "
         request.session.create()
+        request.session.save()
         session_key = request.session.session_key
         #if not session_key:
             #request.session.create()
