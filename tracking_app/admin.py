@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Email,  Redirect, OutboundEmail, WPID, List , UserModel # , Click, WooCategory, WooTag, WooProduct,
+from .models import Email,  Redirect, OutboundEmail, WPID, List , UserModel, Tag # , Click, WooCategory, WooTag, WooProduct,
 
 # Register your models here.
 admin.site.register(Email)
@@ -13,3 +13,4 @@ admin.site.register(List)
 #admin.site.register(WooTag)
 #admin.site.register(WooProduct)
 admin.site.register(WPID)
+admin.site.register(Tag)

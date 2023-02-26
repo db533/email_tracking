@@ -179,30 +179,32 @@ def render_image2(request, id):
         session_key = user_session_key
         # Set the current session_key in case it differs.
         request.session['session_key'] = session_key
+        request.session.save()
     else:
         # The session_key has not been saved.
         # Check if there is a cookie that provides a session_key
-        if request.session.has_key('session_key'):
+        if 'session_key' in request.session:
             session_key = request.session['session_key']
-        if not request.session.has_key('session_key') or session_key == None:
+        if 'session_key' not in request.session or session_key == None:
             session_key = request.session.session_key
             if not session_key:
                 request.session.create()
+                request.session.save()
                 session_key = request.session.session_key
-        #if Session.objects.filter(session_key=session_key).exists():
-        #    session = Session.objects.get(session_key=session_key)
-        #else:
-        #    session = Session.objects.create(session_key=session_key)
+        if Session.objects.filter(session_key=session_key).exists():
+            session = Session.objects.get(session_key=session_key)
+        else:
+            session = Session.objects.create(session_key=session_key)
         # Add the session to the UserModel
-        #email_recipient.sessions = session
+        email_recipient.sessions = session
         email_recipient.save()
 
     image = Image.new('RGB', (1, 1), (255, 255, 255))
     response = HttpResponse(content_type="image/png", status=status.HTTP_200_OK)
     image.save(response, "PNG")
 
-    #response.set_cookie('session_key', session_key)
-    #response.set_cookie('sid', email_recipient.subscriber_id)
+    response.set_cookie('s_key', session_key)
+    response.set_cookie('s_id', email_recipient.subscriber_id)
 
     return response
 
@@ -210,12 +212,14 @@ def page(request, id):
     # Get the session from the received request
     temp_message=""
     request.session.save()
-    if 'sid' in request.session:
-        session_key = request.session['sid']
+    if 's_key' in request.session:
+        session_key = request.session['s_key']
         temp_message +="From cookie. "
         request.session = session_key
         request.session.save()
-    if not 'sid' in request.session or session_key is None:
+    if 's_id' in request.session:
+        subscriber_id = request.session['s_id']
+    if not 's_key' in request.session or session_key is None:
         session_key = request.session.session_key
         temp_message += "No cookie. "
         if session_key is None:
@@ -237,10 +241,20 @@ def page(request, id):
 
     # Set the session key as a cookie in the response
     if session_key is not None:
-        response.set_cookie('sid', session_key)
+        response.set_cookie('s_key', session_key)
     #temp_message += " response.cookies = " + str(response.cookies)
 
     pageview = Pageview.objects.create(page=id, session_key=session_key, session=session, temp_message=temp_message)
+
+    # Now increment the User / Pageview relevance score.
+    if UserPageview.objects.filter(user_model=subscriber_id, wpid=id).exists():
+        # Already have a relevance score for this page, so it has been viewed in the last 2 years
+        user_pageview=UserPageview.objects.get(user_model=subscriber_id, wpid=id)
+        # Increment aged score by 1 as new pageview today.
+        user_pageview.aged_score += 1
+    else:
+        # No relevance score so page not viewed in last 2 years.
+        UserPageview.objects.create(user_model=subscriber_id, wpid=id, aged_score = 1)
 
     return response
 
@@ -251,11 +265,11 @@ def link(request, id):
     redirect_record = Redirect.objects.get(redirect_code=id)
     target_url = redirect_record.target_url
     # Get the session from the received request
-    if 'sid' in request.session:
-        session_key = request.session['sid']
+    if 's_key' in request.session:
+        session_key = request.session['s_key']
         temp_message += "session_key present in request.session. "
         request.session.save()
-    if not 'sid' in request.session or session_key == None:
+    if not 's_key' in request.session or session_key == None:
         temp_message += "session_key missing or None. "
         request.session.create()
         request.session.save()
@@ -274,9 +288,19 @@ def link(request, id):
         session = Session.objects.create(session_key=session_key)
     response = redirect(target_url)
     if session_key is not None:
-        response.set_cookie('sid', session_key)
+        response.set_cookie('s_key', session_key)
         temp_message += "Setting cookie. "
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session, temp_message = temp_message)
+
+    # Now increment the User / Link relevance score.
+    if UserLink.objects.filter(user_model=subscriber_id, wpid=id).exists():
+        # Already have a relevance score for this link, so it has been clicked in the last 2 years
+        user_link=UserLink.objects.get(user_model=subscriber_id, wpid=id)
+        # Increment aged score by 1 as new link click today.
+        user_link.aged_score += 1
+    else:
+        # No relevance score so link not cliecked in last 2 years.
+        UserLink.objects.create(user_model=subscriber_id, wpid=id, aged_score = 1)
 
     return redirect(target_url, response=response)
 
