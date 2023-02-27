@@ -294,7 +294,7 @@ def link(request, id):
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session, temp_message = temp_message)
 
     # Now increment the User / Link relevance score.
-    clicked_wpid = WPID.objects.get(wp_id=id)
+    clicked_wpid = WPID.objects.get(wp_id=redirect_record.wpid)
     if UserLink.objects.filter(user_model=subscriber, wpid=clicked_wpid).exists():
         # Already have a relevance score for this link, so it has been clicked in the last 2 years
         user_link=UserLink.objects.get(user_model=subscriber, wpid=clicked_wpid)
