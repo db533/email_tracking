@@ -263,6 +263,7 @@ from django.shortcuts import redirect
 def link(request, id):
     temp_message=""
     redirect_record = Redirect.objects.get(redirect_code=id)
+    subscriber = redirect_record.subscriber
     target_url = redirect_record.target_url
     # Get the session from the received request
     if 's_key' in request.session:
@@ -293,14 +294,14 @@ def link(request, id):
     click = Click.objects.create(redirect_code_id=id, session_key=session_key, session=session, temp_message = temp_message)
 
     # Now increment the User / Link relevance score.
-    if UserLink.objects.filter(user_model=subscriber_id, wpid=id).exists():
+    if UserLink.objects.filter(user_model=subscriber, wpid=id).exists():
         # Already have a relevance score for this link, so it has been clicked in the last 2 years
-        user_link=UserLink.objects.get(user_model=subscriber_id, wpid=id)
+        user_link=UserLink.objects.get(user_model=subscriber, wpid=id)
         # Increment aged score by 1 as new link click today.
         user_link.aged_score += 1
     else:
         # No relevance score so link not cliecked in last 2 years.
-        UserLink.objects.create(user_model=subscriber_id, wpid=id, aged_score = 1)
+        UserLink.objects.create(user_model=subscriber, wpid=id, aged_score = 1)
 
     return redirect(target_url, response=response)
 

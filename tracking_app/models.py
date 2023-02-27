@@ -71,6 +71,9 @@ class Redirect(models.Model):
     wpid = models.ForeignKey(WPID, on_delete=models.SET_NULL, null=True, blank=True,
                                  help_text='The Wordpress ID associated with this target_url',
                                  verbose_name=('WP id'))
+    subscriber = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, blank=True,
+                                      help_text='The subscriber to whom the link was sent',
+                                      verbose_name=('Email subscriber'), default=1)
 
     def __str__(self):
         return str(self.redirect_code)
